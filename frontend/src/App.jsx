@@ -22,6 +22,7 @@ import MessInCity from "./components/mess/MessInCity";
 import MessNearCollege from "./components/mess/MessNearCollege";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import Contribute from "./components/Contribute";
 
 const App = () => {
   return (

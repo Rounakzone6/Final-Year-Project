@@ -25,11 +25,11 @@ const HostelList = () => {
       </div>
 
       {loading ? (
-        <div className="flex gap-4">
-          {[1, 2, 3, 4, 5].map((n) => (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {[1, 2, 3, 4].map((n) => (
             <div
               key={n}
-              className="w-64 h-80 bg-gray-100 animate-pulse rounded-xl"
+              className="h-80 bg-gray-200 animate-pulse rounded-2xl"
             />
           ))}
         </div>

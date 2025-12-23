@@ -108,8 +108,6 @@ const AddHostel = () => {
           value={formData.price}
           onChange={onChangeHandler}
         />
-
-        {/* Coordinates Group */}
         <input
           className="border p-2 rounded"
           name="lat"

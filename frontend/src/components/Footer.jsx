@@ -144,8 +144,8 @@ const Footer = () => {
             onClick={() => navigate("/owner-request")}
             className="px-4 py-2 rounded-full hover:scale-105 transition-all duration-700 border cursor-pointer border-gray-700"
           >
-            <p className="flex items-center gap-2 text-green-400 hover:text-blue-300 transition-colors">
-              Start you business with us <FaUser size={20} />
+            <p className="flex items-center gap-1 text-green-400 hover:text-blue-300 transition-colors">
+              Start your business with us <FaUser size={20} />
             </p>
           </button>
         </div>

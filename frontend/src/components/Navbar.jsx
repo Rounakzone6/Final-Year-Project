@@ -2,9 +2,11 @@ import { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
 import { logo } from "../assets";
+import Contribute from "./Contribute";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [contributing, setContributing] = useState(false);
 
   const navLinks = [
     { path: "/", label: "Home" },
@@ -56,7 +58,10 @@ const Navbar = () => {
           ))}
         </div>
         <div className="flex items-center gap-4">
-          <button className="hidden md:block bg-blue-600 text-white px-5 py-2 rounded-full font-semibold hover:bg-blue-700 transition-all shadow-sm">
+          <button
+            onClick={() => setContributing(true)}
+            className="hidden md:block bg-blue-600 text-white px-5 py-2 rounded-full font-semibold hover:bg-blue-700 transition-all shadow-sm"
+          >
             Contribute To Us
           </button>
           <button
@@ -67,12 +72,17 @@ const Navbar = () => {
           </button>
         </div>
       </div>
+      {contributing && (
+        <div className="absolute z-10">
+          <Contribute setContributing={setContributing} />
+        </div>
+      )}
       <div
         className={`md:hidden absolute w-full bg-white border-b shadow-lg transition-all duration-300 ease-in-out overflow-hidden ${
           isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="flex flex-col p-5 gap-4">
+        <div className="flex flex-col px-5 py-2 gap-2">
           {navLinks.map((link) => (
             <NavLink
               key={link.path}
@@ -89,7 +99,12 @@ const Navbar = () => {
               {link.label}
             </NavLink>
           ))}
-          <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold mt-2">
+          <button
+            onClick={() => {
+              setContributing(true), setIsOpen(!isOpen);
+            }}
+            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold mt-2"
+          >
             Contribute To Us
           </button>
         </div>
