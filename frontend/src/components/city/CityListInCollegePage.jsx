@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { NavLink } from "react-router-dom";
-import AppContext from "../contexts/AppContext";
+import AppContext from "../../contexts/AppContext";
 
-const CityListInPgPage = () => {
+const CityListInCollegePage = () => {
   const { loading, cityList } = useContext(AppContext);
 
   return (
@@ -23,7 +23,7 @@ const CityListInPgPage = () => {
               ))
             : cityList.slice(0, 15).map((city, index) => (
                 <NavLink
-                  to={`/pg/city/${city._id}`}
+                  to={`/college/city/${city._id}`}
                   key={city._id}
                   className={({ isActive }) =>
                     `flex flex-col items-center gap-1 group transition-all duration-300 ${
@@ -70,4 +70,4 @@ const CityListInPgPage = () => {
   );
 };
 
-export default CityListInPgPage;
+export default CityListInCollegePage;

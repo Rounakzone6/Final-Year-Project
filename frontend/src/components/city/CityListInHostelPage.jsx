@@ -1,17 +1,14 @@
 import { useContext } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import AppContext from "../contexts/AppContext";
+import { NavLink } from "react-router-dom";
+import AppContext from "../../contexts/AppContext";
 
-const CityList = ({ currentPage }) => {
-  const location = useLocation();
+const CityListInHostelPage = () => {
   const { loading, cityList } = useContext(AppContext);
 
-  console.log(location.pathname);
-
   return (
-    <div className="w-full bg-white border-b border-gray-100 py-2">
+    <div className="w-full bg-white border-b border-gray-100 py-4">
       <div className="max-w-[90%] mx-auto">
-        <div className="flex gap-3 justify-items-center md:p-2 overflow-x-hidden">
+        <div className="flex gap-3 justify-items-center p-2 overflow-x-hidden">
           {loading
             ? Array.from({ length: 15 }).map((_, index) => (
                 <div
@@ -26,11 +23,7 @@ const CityList = ({ currentPage }) => {
               ))
             : cityList.slice(0, 15).map((city, index) => (
                 <NavLink
-                  to={
-                    currentPage === "/" || currentPage === "/city"
-                      ? ""
-                      : `${currentPage}/city/${city._id}`
-                  }
+                  to={`/hostel/city/${city._id}`}
                   key={city._id}
                   className={({ isActive }) =>
                     `flex flex-col items-center gap-1 group transition-all duration-300 ${
@@ -77,4 +70,4 @@ const CityList = ({ currentPage }) => {
   );
 };
 
-export default CityList;
+export default CityListInHostelPage;

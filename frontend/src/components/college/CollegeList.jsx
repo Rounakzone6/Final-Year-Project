@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-import AppContext from "../contexts/AppContext";
 import { FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
+import AppContext from "../../contexts/AppContext";
 
 const CollegeList = () => {
   const { loading, collegeList } = useContext(AppContext);

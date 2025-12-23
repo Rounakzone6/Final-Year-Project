@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import AppContext from "./AppContext";
 import axios from "axios";
@@ -16,6 +16,7 @@ const ContextProvider = (props) => {
   const [pgList, setPgList] = useState([]);
   const [messList, setMessList] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const loadData = async () => {
@@ -70,6 +71,7 @@ const ContextProvider = (props) => {
       stateList,
       pgList,
       messList,
+      location,
       setMessList,
       setPgList,
       navigate,
@@ -90,6 +92,7 @@ const ContextProvider = (props) => {
       cityList,
       collegeList,
       hostelList,
+      location,
       navigate,
     ]
   );

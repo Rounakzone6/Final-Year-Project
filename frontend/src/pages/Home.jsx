@@ -1,9 +1,9 @@
-import CityList from "../components/CityList";
-import CollegeList from "../components/CollegeList";
-import HostelList from "../components/HostelList";
-import MessList from "../components/MessList";
-import PgList from "../components/PgList";
 // import Google from "../components/Search";
+import CityList from "../components/city/CityList";
+import CollegeList from "../components/college/CollegeList";
+import HostelList from "../components/hostel/HostelList";
+import MessList from "../components/mess/MessList";
+import PgList from "../components/pg/PgList";
 
 const Home = () => {
   return (

@@ -1,23 +1,23 @@
 import { useContext } from "react";
-import AppContext from "../contexts/AppContext";
 import { Link } from "react-router-dom";
+import AppContext from "../../contexts/AppContext";
 
-const MessList = () => {
-  const { messList, loading } = useContext(AppContext);
+const PgList = () => {
+  const { pgList, loading } = useContext(AppContext);
 
   return (
     <div className="md:p-8 p-4 bg-white">
       <div className="flex justify-between items-end mb-6">
         <div>
           <h2 className="text-3xl font-bold text-gray-900">
-            Top Recommended Canteens/Mess
+            Top Recommended PGs/Flats
           </h2>
           <p className="text-gray-500">
             Handpicked stays based on student reviews
           </p>
         </div>
         <Link
-          to="/mess"
+          to="/pg"
           className="text-blue-600 font-semibold hover:underline text-sm"
         >
           View All →
@@ -36,21 +36,21 @@ const MessList = () => {
       ) : null}
 
       <div className="flex overflow-x-auto pb-4 md:grid md:grid-cols-3 lg:grid-cols-4 gap-6 snap-x no-scrollbar">
-        {messList.slice(0, 8).map((mess) => (
+        {pgList.slice(0, 8).map((pg) => (
           <Link
-            to={`/mess/${mess._id}`}
-            key={mess._id}
+            to={`/pg/${pg._id}`}
+            key={pg._id}
             className="w-64 h-80 snap-start group bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300"
           >
             <div className="relative h-48 overflow-hidden rounded-t-2xl">
               <img
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                src={mess.image?.[0]}
-                alt={mess.name}
+                src={pg.image?.[0]}
+                alt={pg.name}
               />
               <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg shadow-sm">
                 <p className="text-[10px] font-bold text-blue-600 uppercase tracking-wider">
-                  {mess.nonveg ? "Non Veg Available" : "Pure Veg"}
+                  {pg.gender === "male" ? "♂ Boys" : "♀ Girls"}
                 </p>
               </div>
             </div>
@@ -58,7 +58,7 @@ const MessList = () => {
             <div className="p-4">
               <div className="flex justify-between items-start">
                 <h3 className="font-bold text-gray-800 text-lg truncate w-40">
-                  {mess.name}
+                  {pg.name}
                 </h3>
                 <div className="flex items-center text-orange-500 text-sm font-bold">
                   ★ 4.5
@@ -66,7 +66,7 @@ const MessList = () => {
               </div>
 
               <p className="text-sm text-gray-500 truncate mb-4">
-                near {mess.college?.name || "Campus"}
+                near {pg.college?.name || "Campus"}
               </p>
 
               <div className="flex items-center justify-between mt-4">
@@ -75,7 +75,7 @@ const MessList = () => {
                     Starting from
                   </p>
                   <p className="text-blue-600 font-extrabold text-lg">
-                    ₹{mess.price}
+                    ₹{pg.price}
                     <span className="text-xs text-gray-400 font-normal">
                       /mo
                     </span>
@@ -106,4 +106,4 @@ const MessList = () => {
   );
 };
 
-export default MessList;
+export default PgList;

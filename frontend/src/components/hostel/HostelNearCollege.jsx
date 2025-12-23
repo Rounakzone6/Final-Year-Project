@@ -2,23 +2,23 @@ import { useContext, useEffect, useState } from "react";
 import { useOutletContext, useParams, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
-import AppContext from "../contexts/AppContext";
+import AppContext from "../../contexts/AppContext";
 
-const MessNearCollege = () => {
+const HostelNearCollege = () => {
   const { college } = useOutletContext();
   const { id } = useParams();
   const { backendUrl } = useContext(AppContext);
 
-  const [mess, setMess] = useState([]);
+  const [hostels, setHostels] = useState([]);
   const [localLoading, setLocalLoading] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
       try {
         setLocalLoading(true);
-        const response = await axios.get(`${backendUrl}/college/${id}/mess`);
+        const response = await axios.get(`${backendUrl}/college/${id}/hostel`);
         if (response.data.success) {
-          setMess(response.data.mess || []);
+          setHostels(response.data.hostel || []);
         }
       } catch (error) {
         toast.error("Error loading hostels");
@@ -33,9 +33,7 @@ const MessNearCollege = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-xl font-bold mb-6">
-        Canteens/Mess near {college?.name}
-      </h2>
+      <h2 className="text-xl font-bold mb-6">Hostels near {college?.name}</h2>
       {localLoading ? (
         <div className="flex gap-4">
           {[1, 2, 3, 4].map((n) => (
@@ -47,10 +45,10 @@ const MessNearCollege = () => {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {mess.length > 0 ? (
-            mess.map((item) => (
+          {hostels.length > 0 ? (
+            hostels.map((item) => (
               <Link
-                to={`/mess/${item._id}`}
+                to={`/hostel/${item._id}`}
                 key={item._id}
                 className="group block bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg overflow-hidden"
               >
@@ -74,7 +72,7 @@ const MessNearCollege = () => {
             ))
           ) : (
             <div className="col-span-2 text-center py-10 text-gray-400">
-              No Canteens/Mess linked to this college yet.
+              No hostels linked to this college yet.
             </div>
           )}
         </div>
@@ -83,4 +81,4 @@ const MessNearCollege = () => {
   );
 };
 
-export default MessNearCollege;
+export default HostelNearCollege;
