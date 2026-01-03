@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-import AppContext from "../contexts/AppContext";
+import AppContext from "@/contexts/AppContext";
 
 const AddCollege = () => {
   const { loading, setLoading, backendUrl } = useContext(AppContext);

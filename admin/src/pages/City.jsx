@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaPlus } from "react-icons/fa";
 import axios from "axios";
-import AppContext from "../contexts/AppContext";
+import AppContext from "@/contexts/AppContext";
 
 const City = () => {
   const { token, role, loading, backendUrl, cityList, setCities } =

@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
-import AppContext from "../contexts/AppContext";
+import AppContext from "@/contexts/AppContext";
 import {
   FaDirections,
   FaRupeeSign,

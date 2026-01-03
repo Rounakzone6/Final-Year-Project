@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { Link, Outlet,  } from "react-router-dom";
-import AppContext from "../../contexts/AppContext";
-import CityListInMessPage from "../../components/city/CityListInMessPage";
+import AppContext from "@/contexts/AppContext";
+import CityListInMessPage from "@/components/city/CityListInMessPage";
 
 const Mess = () => {
   const { messList,location, loading, navigate } = useContext(AppContext);

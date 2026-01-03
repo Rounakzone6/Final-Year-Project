@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
-import AppContext from "../../contexts/AppContext";
-import CityListInHostelPage from "../../components/city/CityListInHostelPage";
+import AppContext from "@/contexts/AppContext";
+import CityListInHostelPage from "@/components/city/CityListInHostelPage";
 
 const Hostel = () => {
   const { hostelList, navigate, location, loading } = useContext(AppContext);

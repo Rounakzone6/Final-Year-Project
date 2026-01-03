@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import AppContext from "../../contexts/AppContext";
-import PlaceMap from "../../components/PlaceMap";
+import AppContext from "@/contexts/AppContext";
+import PlaceMap from "@/components/PlaceMap";
 
 const PgDetails = () => {
   const { id } = useParams();

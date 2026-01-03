@@ -1,26 +1,26 @@
 import { Route, Routes } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar";
+import Navbar from "@/components/Navbar";
+import Sidebar from "@/components/Sidebar";
 import Dashboard from "./Dashboard";
 
-import AdminManage from "../components/AdminManage";
-import NewAdmin from "../components/NewAdmin";
+import AdminManage from "@/components/AdminManage";
+import NewAdmin from "@/components/NewAdmin";
 
 import City from "./City";
-import AddCity from "../components/AddCity";
+import AddCity from "@/components/AddCity";
 
 import College from "./College";
 import CollegeDetails from "./CollegeDetails";
-import AddCollege from "../components/AddCollege";
+import AddCollege from "@/components/AddCollege";
 
 import Hostel from "./Hostel";
-import AddHostel from "../components/AddHostel";
+import AddHostel from "@/components/AddHostel";
 
 import Mess from "./Mess";
-import AddMess from "../components/AddMess";
+import AddMess from "@/components/AddMess";
 
 import Pg from "./Pg";
-import AddPg from "../components/AddPg";
+import AddPg from "@/components/AddPg";
 
 import OwnerList from "./OwnerList";
 import OwnerDetails from "./OwnerDetails";

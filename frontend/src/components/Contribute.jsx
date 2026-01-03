@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { RxCross2 } from "react-icons/rx";
 import axios from "axios";
-import AppContext from "../contexts/AppContext";
+import AppContext from "@/contexts/AppContext";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const Contribute = ({ setContributing }) => {

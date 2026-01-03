@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
-import AppContext from "../../contexts/AppContext";
-import CityListInPgPage from "../../components/city/CityListInPgPage";
+import AppContext from "@/contexts/AppContext";
+import CityListInPgPage from "@/components/city/CityListInPgPage";
 
 const Pg = () => {
   const { pgList, location, navigate, loading } = useContext(AppContext);

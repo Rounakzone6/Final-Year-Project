@@ -6,7 +6,7 @@ import {
   useApiIsLoaded,
   useMapsLibrary,
 } from "@vis.gl/react-google-maps";
-import AppContext from "../contexts/AppContext";
+import AppContext from "@/contexts/AppContext";
 
 const Search = () => {
   const [mapCenter, setMapCenter] = useState(null);

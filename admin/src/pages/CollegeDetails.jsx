@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { FaDirections, FaEdit, FaPlus, FaTrash } from "react-icons/fa";
 import { FaEarthAsia } from "react-icons/fa6";
 import axios from "axios";
-import AppContext from "../contexts/AppContext";
+import AppContext from "@/contexts/AppContext";
 
 const CollegeDetails = () => {
   const { id } = useParams();

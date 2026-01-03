@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { FaXTwitter } from "react-icons/fa6";
-import AppContext from "../contexts/AppContext";
+import AppContext from "@/contexts/AppContext";
 import {
   FaFacebook,
   FaInstagram,

@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
-import AppContext from "../../contexts/AppContext";
-import CityListInCollegePage from "../../components/city/CityListInCollegePage";
+import AppContext from "@/contexts/AppContext";
+import CityListInCollegePage from "@/components/city/CityListInCollegePage";
 
 const College = () => {
   const { loading, location, collegeList } = useContext(AppContext);

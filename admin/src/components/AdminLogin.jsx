@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-import AppContext from "../contexts/AppContext";
+import AppContext from "@/contexts/AppContext";
 
 const AdminLogin = () => {
   const { backendUrl, setToken, setRole } = useContext(AppContext);

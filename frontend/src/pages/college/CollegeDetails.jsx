@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { NavLink, useParams, Outlet } from "react-router-dom";
 import axios from "axios";
-import AppContext from "../../contexts/AppContext";
-import PlaceMap from "../../components/PlaceMap";
+import AppContext from "@/contexts/AppContext";
+import PlaceMap from "@/components/PlaceMap";
 
 const CollegeDetails = () => {
   const { id } = useParams();

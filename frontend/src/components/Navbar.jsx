@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
-import { logo } from "../assets";
+import { logo } from "@/assets";
 import Contribute from "./Contribute";
 
 const Navbar = () => {

@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-import AppContext from "../../contexts/AppContext";
+import AppContext from "@/contexts/AppContext";
 
 const PgList = () => {
   const { pgList, loading } = useContext(AppContext);
