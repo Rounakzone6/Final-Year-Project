@@ -9,13 +9,13 @@ import {
 import AppContext from "../contexts/AppContext";
 
 const Search = () => {
-  const apiIsLoaded = useApiIsLoaded();
-  const placesLibrary = useMapsLibrary("places");
   const [mapCenter, setMapCenter] = useState(null);
   const [placeDetails, setPlaceDetails] = useState(null);
-  const { mapId } = useContext(AppContext);
-
+  
   const searchRef = useRef(null);
+  const { mapId } = useContext(AppContext);
+  const apiIsLoaded = useApiIsLoaded();
+  const placesLibrary = useMapsLibrary("places");
 
   useEffect(() => {
     if ("geolocation" in navigator) {

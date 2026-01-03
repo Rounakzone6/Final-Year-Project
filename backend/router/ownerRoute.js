@@ -1,10 +1,11 @@
 import express from "express";
-import {
-  rejectRequest,
-  requestList,
-  sendRequest,
-} from "../controller/ownerController.js";
 import authAdmin from "../middleware/authAdmin.js";
+import {
+  sendRequest,
+  requestList,
+  rejectRequest,
+} from "../controller/ownerController.js";
+
 const ownerRoute = express.Router();
 
 ownerRoute.get("/", requestList);

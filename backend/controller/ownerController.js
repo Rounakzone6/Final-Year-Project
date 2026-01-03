@@ -1,5 +1,5 @@
-import ownerModel from "../models/ownerModel.js";
 import validator from "validator";
+import ownerModel from "../models/ownerModel.js";
 
 const sendRequest = async (req, res) => {
   try {
@@ -62,4 +62,4 @@ const verifyRequest = async (req, res) => {
   }
 };
 
-export { sendRequest, requestList, rejectRequest, verifyRequest };
+export { requestList, sendRequest, verifyRequest, rejectRequest, ownerDetails };

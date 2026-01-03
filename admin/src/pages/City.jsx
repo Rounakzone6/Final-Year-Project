@@ -1,9 +1,9 @@
-import axios from "axios";
 import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
-import { AppContext } from "../contexts/AppContext";
 import { FaPlus } from "react-icons/fa";
+import axios from "axios";
+import AppContext from "../contexts/AppContext";
 
 const City = () => {
   const { token, role, loading, backendUrl, cityList, setCities } =

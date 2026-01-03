@@ -1,5 +1,5 @@
-import cityModel from "../models/cityModel.js";
 import stateModel from "../models/stateModel.js";
+import cityModel from "../models/cityModel.js";
 
 const addCity = async (req, res) => {
   try {
@@ -43,6 +43,23 @@ const cityList = async (req, res) => {
   try {
     const cities = await cityModel.find({}).populate("state", "name");
     res.status(200).json({ success: true, cities });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+const editCity = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedCity = await cityModel.findByIdAndDelete(id);
+    if (!deletedCity)
+      return res.json({ success: false, message: "City not found" });
+
+    await stateModel.findByIdAndDelete(id, {
+      $pull: { cities: id },
+    });
+
+    res.json({ success: true, message: "City removed" });
   } catch (error) {
     res.json({ success: false, message: error.message });
   }
@@ -146,8 +163,9 @@ const messInCity = async (req, res) => {
 };
 
 export {
-  addCity,
   cityList,
+  addCity,
+  editCity,
   removeCity,
   collegeInCity,
   hostelInCity,

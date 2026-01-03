@@ -1,8 +1,7 @@
-import axios from "axios";
-import { useContext } from "react";
-import { AppContext } from "../contexts/AppContext";
+import { useContext, useState } from "react";
 import { toast } from "react-toastify";
-import { useState } from "react";
+import axios from "axios";
+import AppContext from "../contexts/AppContext";
 
 const AddAdmin = () => {
   const [name, setName] = useState("");

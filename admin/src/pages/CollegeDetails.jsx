@@ -1,10 +1,10 @@
-import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import { FaDirections, FaEdit, FaPlus, FaTrash } from "react-icons/fa";
 import { FaEarthAsia } from "react-icons/fa6";
-import { toast } from "react-toastify";
-import { AppContext } from "../contexts/AppContext";
+import axios from "axios";
+import AppContext from "../contexts/AppContext";
 
 const CollegeDetails = () => {
   const { id } = useParams();

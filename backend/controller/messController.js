@@ -1,6 +1,6 @@
-import fs from "fs";
-import axios from "axios";
 import { v2 as cloudinary } from "cloudinary";
+import axios from "axios";
+import fs from "fs";
 import cityModel from "../models/cityModel.js";
 import collegeModel from "../models/collegeModel.js";
 import messModel from "../models/messModel.js";
@@ -276,4 +276,4 @@ const removeMess = async (req, res) => {
   }
 };
 
-export { messList, addMess, removeMess, editMess, messDetails, messAdd };
+export { messList, messDetails, messAdd, addMess, removeMess, editMess };

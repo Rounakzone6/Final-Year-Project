@@ -2,27 +2,31 @@ import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Home from "./pages/Home";
 import City from "./pages/city/City";
-import College from "./pages/college/College";
-import Hostel from "./pages/hostel/Hostel";
-import Pg from "./pages/pg/Pg";
-import Mess from "./pages/mess/Mess";
 import CityDetails from "./pages/city/CityDetails";
+
+import College from "./pages/college/College";
 import CollegeDetails from "./pages/college/CollegeDetails";
-import HostelDetails from "./pages/hostel/HostelDetails";
-import PgDetails from "./pages/pg/PgDetails";
-import MessDetails from "./pages/mess/MessDetails";
-import OwnerRequest from "./pages/OwnerRequest";
-import CollegeInCity from "./components/college/CollegeInCity";
 import CollegeDescription from "./components/college/CollegeDescription";
+import CollegeInCity from "./components/college/CollegeInCity";
+
+import Hostel from "./pages/hostel/Hostel";
+import HostelDetails from "./pages/hostel/HostelDetails";
 import HostelInCity from "./components/hostel/HostelInCity";
 import HostelNearCollege from "./components/hostel/HostelNearCollege";
+
+import Pg from "./pages/pg/Pg";
+import PgDetails from "./pages/pg/PgDetails";
 import PgInCity from "./components/pg/PgInCity";
 import PgNearCollege from "./components/pg/PgNearCollege";
+
+import Mess from "./pages/mess/Mess";
+import MessDetails from "./pages/mess/MessDetails";
 import MessInCity from "./components/mess/MessInCity";
 import MessNearCollege from "./components/mess/MessNearCollege";
+
+import OwnerRequest from "./pages/OwnerRequest";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import Contribute from "./components/Contribute";
 
 const App = () => {
   return (

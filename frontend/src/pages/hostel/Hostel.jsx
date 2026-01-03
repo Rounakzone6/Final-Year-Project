@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
-import AppContext from "../../contexts/AppContext";
 import { Link, Outlet } from "react-router-dom";
+import AppContext from "../../contexts/AppContext";
 import CityListInHostelPage from "../../components/city/CityListInHostelPage";
 
 const Hostel = () => {

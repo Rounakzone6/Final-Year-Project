@@ -1,6 +1,6 @@
-import fs from "fs";
-import axios from "axios";
 import { v2 as cloudinary } from "cloudinary";
+import axios from "axios";
+import fs from "fs";
 import cityModel from "../models/cityModel.js";
 import collegeModel from "../models/collegeModel.js";
 import contributeModel from "../models/contributeModel.js";
@@ -282,12 +282,12 @@ const messNearCollege = async (req, res) => {
 
 export {
   collegeList,
+  collegeDetails,
+  collegeAdd,
   addCollege,
   editCollege,
   removeCollege,
-  collegeDetails,
   hostelNearCollege,
   pgNearCollege,
   messNearCollege,
-  collegeAdd,
 };

@@ -12,11 +12,11 @@ import { verifyRequest } from "../controller/ownerController.js";
 
 const adminRoute = express.Router();
 
+adminRoute.post("/super-login", superAdminLogin);
+adminRoute.post("/login", adminLogin);
 adminRoute.post("/register", authSuper, adminRegister);
 adminRoute.get("/list", authSuper, adminList);
 adminRoute.delete("/delete/:id", authSuper, removeAdmin);
-adminRoute.post("/login", adminLogin);
-adminRoute.post("/super-login", superAdminLogin);
 adminRoute.patch("/verify/:id", authAdmin, verifyRequest);
 
 export default adminRoute;

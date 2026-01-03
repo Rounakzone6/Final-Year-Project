@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useContext, useState } from "react";
-import { FaX } from "react-icons/fa6";
 import { toast } from "react-toastify";
+import { RxCross2 } from "react-icons/rx";
+import axios from "axios";
 import AppContext from "../contexts/AppContext";
 import ReCAPTCHA from "react-google-recaptcha";
 
@@ -9,6 +9,8 @@ const Contribute = ({ setContributing }) => {
   const [type, setType] = useState("College");
   const [active, setActive] = useState("College");
   const [captchaToken, setCaptchaToken] = useState("");
+  const [imageFiles, setImageFiles] = useState(null);
+
   const { backendUrl, loading, setLoading } = useContext(AppContext);
 
   const items = ["College", "Hostel", "PG/Flat", "Canteen/Mess"];
@@ -27,7 +29,6 @@ const Contribute = ({ setContributing }) => {
     gender: "male",
     nonveg: "false",
   });
-  const [imageFiles, setImageFiles] = useState(null);
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
@@ -110,7 +111,7 @@ const Contribute = ({ setContributing }) => {
           <p className="text-2xl font-semibold text-center my-2">
             Contribute to us
           </p>
-          <FaX
+          <RxCross2
             className="text-2xl font-medium cursor-pointer"
             onClick={() => setContributing(false)}
           />

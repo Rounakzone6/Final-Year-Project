@@ -1,10 +1,10 @@
-import axios from "axios";
 import { useContext } from "react";
-import { toast } from "react-toastify";
 import { NavLink } from "react-router-dom";
+import { toast } from "react-toastify";
 import { FaDirections, FaPhoneAlt, FaTrashAlt, FaPlus } from "react-icons/fa";
 import { FaEarthAsia } from "react-icons/fa6";
-import { AppContext } from "../contexts/AppContext";
+import axios from "axios";
+import AppContext from "../contexts/AppContext";
 
 const College = () => {
   const { token, loading, collegeList, setCollegeList, backendUrl } =

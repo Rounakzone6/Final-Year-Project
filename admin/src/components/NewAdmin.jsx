@@ -1,14 +1,13 @@
-import axios from "axios";
 import { useContext, useState } from "react";
 import { toast } from "react-toastify";
-import { AppContext } from "../contexts/AppContext";
+import axios from "axios";
+import AppContext from "../contexts/AppContext";
 
 const NewAdmin = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { token, backendUrl, loading, setLoading } =
-    useContext(AppContext);
+  const { token, backendUrl, loading, setLoading } = useContext(AppContext);
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();

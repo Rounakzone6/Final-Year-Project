@@ -1,14 +1,15 @@
 import express from "express";
+import authSuper from "../middleware/authSuper.js";
 import {
-  addCity,
   cityList,
+  addCity,
+  editCity,
   removeCity,
   collegeInCity,
   hostelInCity,
   pgInCity,
   messInCity,
 } from "../controller/cityController.js";
-import authSuper from "../middleware/authSuper.js";
 
 const cityRoute = express.Router();
 
@@ -18,6 +19,7 @@ cityRoute.get("/:id/hostel", hostelInCity);
 cityRoute.get("/:id/pg", pgInCity);
 cityRoute.get("/:id/mess", messInCity);
 cityRoute.delete("/delete/:id", authSuper, removeCity);
+cityRoute.delete("/edit/:id", authSuper, editCity);
 cityRoute.post("/add", authSuper, addCity);
 
 export default cityRoute;

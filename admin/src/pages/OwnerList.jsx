@@ -1,8 +1,8 @@
-import axios from "axios";
 import { useContext, useEffect } from "react";
-import { toast } from "react-toastify";
 import { NavLink } from "react-router-dom";
-import { AppContext } from "../contexts/AppContext";
+import { toast } from "react-toastify";
+import axios from "axios";
+import AppContext from "../contexts/AppContext";
 
 const OwnerList = () => {
   const { backendUrl, loading, ownerList, setOwnerList, token } =

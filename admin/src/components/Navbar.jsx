@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { AppContext } from "../contexts/AppContext";
 import { logo } from "../assets";
+import AppContext from "../contexts/AppContext";
 
 const Navbar = () => {
   const { token, role, setToken, navigate } = useContext(AppContext);

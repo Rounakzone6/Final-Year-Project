@@ -1,6 +1,6 @@
-import fs from "fs";
-import axios from "axios";
 import { v2 as cloudinary } from "cloudinary";
+import axios from "axios";
+import fs from "fs";
 import cityModel from "../models/cityModel.js";
 import collegeModel from "../models/collegeModel.js";
 import pgModel from "../models/pgModel.js";
@@ -114,7 +114,7 @@ const pgAdd = async (req, res) => {
     }
 
     await contributeModel.findOneAndUpdate(
-      {}, 
+      {},
       { $push: { pgs: savedPg._id } },
       { upsert: true, new: true }
     );
@@ -293,4 +293,4 @@ const removepg = async (req, res) => {
   }
 };
 
-export { pgList, addpg, removepg, editpg, pgDetails, pgAdd };
+export { pgList, pgDetails, pgAdd, addpg, editpg, removepg };

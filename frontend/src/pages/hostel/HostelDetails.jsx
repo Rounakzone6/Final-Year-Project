@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import AppContext from "../../contexts/AppContext";
 import axios from "axios";
+import AppContext from "../../contexts/AppContext";
 import PlaceMap from "../../components/PlaceMap";
 import {
   FaPhoneAlt,

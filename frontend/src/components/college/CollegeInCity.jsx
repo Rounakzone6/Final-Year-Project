@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
 import axios from "axios";
 import AppContext from "../../contexts/AppContext";
-import { FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
 
 const CollegeInCity = () => {
   const { id } = useParams();

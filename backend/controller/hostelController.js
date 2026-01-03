@@ -1,6 +1,6 @@
-import fs from 'fs'
-import axios from "axios";
 import { v2 as cloudinary } from "cloudinary";
+import axios from "axios";
+import fs from "fs";
 import cityModel from "../models/cityModel.js";
 import collegeModel from "../models/collegeModel.js";
 import hostelModel from "../models/hostelModel.js";
@@ -179,7 +179,7 @@ const hostelAdd = async (req, res) => {
     await cityDoc.save();
 
     await contributeModel.findOneAndUpdate(
-      {}, 
+      {},
       { $push: { hostels: savedHostel._id } },
       { upsert: true, new: true }
     );
@@ -286,9 +286,9 @@ const removeHostel = async (req, res) => {
 
 export {
   hostelList,
-  addHostel,
-  removeHostel,
-  editHostel,
   hostelDetails,
   hostelAdd,
+  addHostel,
+  editHostel,
+  removeHostel,
 };

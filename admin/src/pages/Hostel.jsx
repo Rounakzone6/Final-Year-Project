@@ -1,7 +1,8 @@
-import axios from "axios";
 import { useContext } from "react";
-import { toast } from "react-toastify";
 import { NavLink } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
+import AppContext from "../contexts/AppContext";
 import {
   FaDirections,
   FaRupeeSign,
@@ -9,7 +10,6 @@ import {
   FaTrashAlt,
   FaPlus,
 } from "react-icons/fa";
-import { AppContext } from "../contexts/AppContext";
 
 const Hostel = () => {
   const { token, loading, hostelList, setHostelList, backendUrl } =

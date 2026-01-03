@@ -1,5 +1,5 @@
-import reviewModel from "../models/reviewModel.js";
 import { v2 as cloudinary } from "cloudinary";
+import reviewModel from "../models/reviewModel.js";
 
 const sendReview = async (req, res) => {
   try {
@@ -34,4 +34,4 @@ const deleteReview = async (req, res) => {
   }
 };
 
-export { sendReview, reviewList, deleteReview };
+export { reviewList, sendReview, deleteReview };

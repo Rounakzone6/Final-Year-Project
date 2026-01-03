@@ -25,4 +25,4 @@ const addState = async (req, res) => {
   }
 };
 
-export { addState, stateList };
+export { stateList, addState };

@@ -1,13 +1,10 @@
 import { useState, useMemo, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import AppContext from "./AppContext";
 import axios from "axios";
+import AppContext from "./AppContext";
 
 const ContextProvider = (props) => {
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
-  const mapId = import.meta.env.VITE_GOOGLE_MAPID;
-  const googleApiKey = import.meta.env.VITE_GOOGLE_MAP_API_KEY;
   const [loading, setLoading] = useState(false);
   const [stateList, setStateList] = useState([]);
   const [cityList, setCityList] = useState([]);
@@ -15,6 +12,11 @@ const ContextProvider = (props) => {
   const [hostelList, setHostelList] = useState([]);
   const [pgList, setPgList] = useState([]);
   const [messList, setMessList] = useState([]);
+
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const mapId = import.meta.env.VITE_GOOGLE_MAPID;
+  const googleApiKey = import.meta.env.VITE_GOOGLE_MAP_API_KEY;
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -65,35 +67,35 @@ const ContextProvider = (props) => {
       loading,
       mapId,
       googleApiKey,
+      stateList,
       cityList,
       collegeList,
       hostelList,
-      stateList,
       pgList,
       messList,
       location,
-      setMessList,
-      setPgList,
       navigate,
       setLoading,
       setStateList,
       setCityList,
       setCollegeList,
       setHostelList,
+      setPgList,
+      setMessList,
     }),
     [
+      navigate,
       backendUrl,
-      pgList,
       loading,
+      location,
       mapId,
-      messList,
       googleApiKey,
       stateList,
       cityList,
       collegeList,
       hostelList,
-      location,
-      navigate,
+      pgList,
+      messList,
     ]
   );
 

@@ -1,13 +1,13 @@
 import express from "express";
+import upload from "../middleware/multer.js";
+import { collegeAdd } from "../controller/collegeController.js";
+import { hostelAdd } from "../controller/hostelController.js";
+import { pgAdd } from "../controller/pgController.js";
+import { messAdd } from "../controller/messController.js";
 import {
   contribution,
   contributionCount,
 } from "../controller/contributeController.js";
-import { collegeAdd } from "../controller/collegeController.js";
-import { hostelAdd } from "../controller/hostelController.js";
-import { messAdd } from "../controller/messController.js";
-import { pgAdd } from "../controller/pgController.js";
-import upload from "../middleware/multer.js";
 
 const contributeRoute = express.Router();
 

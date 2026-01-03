@@ -1,8 +1,6 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import AppContext from "../../contexts/AppContext";
-import { useState } from "react";
-import CityList from "../../components/city/CityList";
 
 const City = () => {
   const { loading, location, cityList } = useContext(AppContext);

@@ -1,13 +1,13 @@
 import express from "express";
 import authAdmin from "../middleware/authAdmin.js";
+import upload from "../middleware/multer.js";
 import {
   addpg,
   editpg,
-  pgDetails,
-  pgList,
   removepg,
+  pgList,
+  pgDetails,
 } from "../controller/pgController.js";
-import upload from "../middleware/multer.js";
 
 const pgRoute = express.Router();
 

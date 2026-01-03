@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { AppContext } from "../contexts/AppContext";
+import AppContext from "../contexts/AppContext";
 
 const AddHostel = () => {
   const { loading, setLoading, backendUrl } = useContext(AppContext);
@@ -36,7 +36,7 @@ const AddHostel = () => {
         },
       });
       console.log(res.data);
-      
+
       if (res.data.success) {
         toast.success(res.data.message);
         setFormData({

@@ -1,5 +1,7 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { FaXTwitter } from "react-icons/fa6";
+import AppContext from "../contexts/AppContext";
 import {
   FaFacebook,
   FaInstagram,
@@ -7,8 +9,6 @@ import {
   FaArrowUp,
   FaUser,
 } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
-import AppContext from "../contexts/AppContext";
 
 const Footer = () => {
   const { cityList, collegeList, navigate } = useContext(AppContext);

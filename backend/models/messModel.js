@@ -6,9 +6,9 @@ const messSchema = new mongoose.Schema(
     city: { type: mongoose.Schema.Types.ObjectId, ref: "city", required: true },
     college: { type: mongoose.Schema.Types.ObjectId, ref: "college" },
     image: { type: [String], required: true },
-    nonveg: { type: Boolean, default: true },
     phone: { type: Number, required: true },
     price: { type: Number, required: true },
+    nonveg: { type: Boolean, default: true },
     isVerified: { type: Boolean, default: false },
     locations: {
       type: {

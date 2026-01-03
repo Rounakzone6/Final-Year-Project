@@ -1,9 +1,9 @@
-import axios from "axios";
 import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaPlus, FaTrash, FaEdit } from "react-icons/fa";
-import { AppContext } from "../contexts/AppContext";
+import axios from "axios";
+import AppContext from "../contexts/AppContext";
 
 const AdminManage = () => {
   const { backendUrl, token, adminList, setAdminList } = useContext(AppContext);

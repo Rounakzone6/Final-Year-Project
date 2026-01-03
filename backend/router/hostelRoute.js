@@ -1,10 +1,10 @@
 import express from "express";
 import authAdmin from "../middleware/authAdmin.js";
 import {
+  hostelList,
+  hostelDetails,
   addHostel,
   editHostel,
-  hostelDetails,
-  hostelList,
   removeHostel,
 } from "../controller/hostelController.js";
 

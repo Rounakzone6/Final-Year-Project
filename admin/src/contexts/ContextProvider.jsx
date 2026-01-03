@@ -1,8 +1,8 @@
 import { useEffect, useState, useMemo } from "react";
-import { AppContext } from "./AppContext";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import AppContext from "./AppContext";
 
 const ContextProvider = (props) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;

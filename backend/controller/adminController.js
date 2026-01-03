@@ -94,4 +94,4 @@ const removeAdmin = async (req, res) => {
   }
 };
 
-export { adminLogin, adminRegister, superAdminLogin, adminList, removeAdmin };
+export { superAdminLogin, adminRegister, adminLogin, adminList, removeAdmin };

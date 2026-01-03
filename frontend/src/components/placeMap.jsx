@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import AppContext from "../contexts/AppContext";
 import { APIProvider, Map, AdvancedMarker } from "@vis.gl/react-google-maps";
+import AppContext from "../contexts/AppContext";
 
 const PlaceMap = ({ center }) => {
   const { googleApiKey, mapId } = useContext(AppContext);
