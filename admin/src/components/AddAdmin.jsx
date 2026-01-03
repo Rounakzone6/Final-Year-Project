@@ -8,6 +8,7 @@ const AddAdmin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { token, backendUrl, loading, setLoading } = useContext(AppContext);
+
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -15,10 +16,11 @@ const AddAdmin = () => {
       const response = await axios.post(
         `${backendUrl}/admin/register`,
         { name, email, password },
-        { headers: `Bearer ${token}` }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
+
       if (response.data.success) {
-        toast.success(response.data.success);
+        toast.success(response.data.message);
         setEmail("");
         setName("");
         setPassword("");
@@ -26,44 +28,78 @@ const AddAdmin = () => {
         toast.error(response.data.message);
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || error.message);
     } finally {
       setLoading(false);
     }
   };
+
   return (
-    <>
-      <form
-        className="max-w-md mx-auto p-4 border rounded"
-        onSubmit={onSubmitHandler}
-      >
-        <input
-          className="w-full mb-3 p-2 border"
-          onChange={() => setName(name)}
-          value={name}
-          type="text"
-          name="name"
-          placeholder="Admin name"
-        />
-        <input
-          className="w-full mb-3 p-2 border"
-          onChange={() => setEmail(email)}
-          value={email}
-          type="email"
-          name="email"
-          placeholder="Admin email"
-        />
-        <input
-          className="w-full mb-3 p-2 border"
-          onChange={() => setPassword(password)}
-          value={password}
-          type="password"
-          name="password"
-          placeholder="Admin password"
-        />
-        <button type="submit">{loading ? "Submiting..." : "Register"}</button>
-      </form>
-    </>
+    <div className="flex items-center justify-center p-4 sm:p-8">
+      <div className="w-full max-w-lg bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sm:p-10">
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-900">Add New Admin</h2>
+          <p className="text-gray-500 text-sm">
+            Create a new administrative account for the system.
+          </p>
+        </div>
+
+        <form className="space-y-5" onSubmit={onSubmitHandler}>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
+              Full Name
+            </label>
+            <input
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-black focus:outline-none transition-all"
+              onChange={(e) => setName(e.target.value)}
+              value={name}
+              type="text"
+              placeholder="John Doe"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
+              Email Address
+            </label>
+            <input
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-black focus:outline-none transition-all"
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              type="email"
+              placeholder="admin@college.com"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
+              Password
+            </label>
+            <input
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-black focus:outline-none transition-all"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              type="password"
+              placeholder="********"
+              required
+            />
+          </div>
+          <button
+            disabled={loading}
+            className={`w-full py-3 px-4 rounded-lg font-bold text-white transition-all active:scale-95 ${
+              loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-black hover:bg-gray-800"
+            }`}
+            type="submit"
+          >
+            {loading ? "Registering..." : "Add Admin Account"}
+          </button>
+        </form>
+      </div>
+    </div>
   );
 };
 

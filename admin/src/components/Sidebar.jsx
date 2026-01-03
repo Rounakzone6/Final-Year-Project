@@ -1,47 +1,95 @@
 import { NavLink } from "react-router-dom";
+import {
+  FaCity,
+  FaUniversity,
+  FaHotel,
+  FaHome,
+  FaUtensils,
+  FaUserShield,
+} from "react-icons/fa";
 
 const Sidebar = () => {
+  const linkBaseClass =
+    "flex items-center gap-3 px-4 py-3 rounded-l-xl transition-all duration-200 border-y border-l border-transparent mb-1";
+  const activeClass =
+    "bg-blue-50 text-blue-700 border-blue-200 font-semibold shadow-[-4px_0_0_0_#1d4ed8]";
+  const inactiveClass = "text-gray-600 hover:bg-gray-50 hover:text-black";
+
   return (
-    <div className="w-[18%] min-h-screen border-r-2">
-      <div className="flex flex-col gap-4 pt-6 pl-[20%] text-[15px]">
+    <aside className="w-[18%] md:w-[18%] min-h-dvh bg-white border-r border-gray-100 flex flex-col pt-8">
+      <div className="flex flex-col pl-2 md:pl-6 space-y-1">
+        <p className="hidden md:block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">
+          Management
+        </p>
+
         <NavLink
-          className="flex items-center gap-3 border border-gray-300 border-r-0 px-3 py-2 rounded-l"
           to="/city"
+          className={({ isActive }) =>
+            `${linkBaseClass} ${isActive ? activeClass : inactiveClass}`
+          }
         >
-          <p className="hidden md:block">Cities</p>
+          <FaCity className="text-lg md:text-base shrink-0" />
+          <span className="hidden md:block text-xs md:text-sm">Cities</span>
         </NavLink>
+
         <NavLink
-          className="flex items-center gap-3 border border-gray-300 border-r-0 px-3 py-2 rounded-l"
           to="/college"
+          className={({ isActive }) =>
+            `${linkBaseClass} ${isActive ? activeClass : inactiveClass}`
+          }
         >
-          <p className="hidden md:block">Colleges</p>
+          <FaUniversity className="text-lg md:text-base shrink-0" />
+          <span className="hidden md:block text-xs md:text-sm">Colleges</span>
         </NavLink>
+
         <NavLink
-          className="flex items-center gap-3 border border-gray-300 border-r-0 px-3 py-2 rounded-l"
           to="/hostel"
+          className={({ isActive }) =>
+            `${linkBaseClass} ${isActive ? activeClass : inactiveClass}`
+          }
         >
-          <p className="hidden md:block">Hostels</p>
+          <FaHotel className="text-lg md:text-base shrink-0" />
+          <span className="hidden md:block text-xs md:text-sm">Hostels</span>
         </NavLink>
+
         <NavLink
-          className="flex items-center gap-3 border border-gray-300 border-r-0 px-3 py-2 rounded-l"
           to="/pg"
+          className={({ isActive }) =>
+            `${linkBaseClass} ${isActive ? activeClass : inactiveClass}`
+          }
         >
-          <p className="hidden md:block">PG</p>
+          <FaHome className="text-lg md:text-base shrink-0" />
+          <span className="hidden md:block text-xs md:text-sm">PGs</span>
         </NavLink>
+
         <NavLink
-          className="flex items-center gap-3 border border-gray-300 border-r-0 px-3 py-2 rounded-l"
           to="/mess"
+          className={({ isActive }) =>
+            `${linkBaseClass} ${isActive ? activeClass : inactiveClass}`
+          }
         >
-          <p className="hidden md:block">Mess</p>
+          <FaUtensils className="text-lg md:text-base shrink-0" />
+          <span className="hidden md:block text-xs md:text-sm">Mess Units</span>
         </NavLink>
-        <NavLink
-          className="flex items-center gap-3 border border-gray-300 border-r-0 px-3 py-2 rounded-l"
-          to="/owner"
-        >
-          <p className="hidden md:block">Owner's request</p>
-        </NavLink>
+
+        <div className="pt-6 mt-4 border-t border-gray-100">
+          <p className="hidden md:block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4 px-2">
+            Requests
+          </p>
+          <NavLink
+            to="/owner"
+            className={({ isActive }) =>
+              `${linkBaseClass} ${isActive ? activeClass : inactiveClass}`
+            }
+          >
+            <FaUserShield className="text-lg md:text-base shrink-0" />
+            <span className="hidden md:block text-xs md:text-sm">
+              Owner Requests
+            </span>
+          </NavLink>
+        </div>
       </div>
-    </div>
+    </aside>
   );
 };
 

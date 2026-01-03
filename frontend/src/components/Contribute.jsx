@@ -1,6 +1,7 @@
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { RxCross2 } from "react-icons/rx";
+import { FaCloudUploadAlt, FaMapMarkedAlt, FaHashtag } from "react-icons/fa";
 import axios from "axios";
 import AppContext from "@/contexts/AppContext";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -10,7 +11,9 @@ const Contribute = ({ setContributing }) => {
   const [active, setActive] = useState("College");
   const [captchaToken, setCaptchaToken] = useState("");
   const [imageFiles, setImageFiles] = useState(null);
+  const [previews, setPreviews] = useState([]);
 
+  const recaptchaRef = useRef(null);
   const { backendUrl, loading, setLoading } = useContext(AppContext);
 
   const items = ["College", "Hostel", "PG/Flat", "Canteen/Mess"];
@@ -36,7 +39,12 @@ const Contribute = ({ setContributing }) => {
   };
 
   const onFileChange = (e) => {
+    const files = Array.from(e.target.files);
     setImageFiles(e.target.files);
+
+    // Create local URLs for previewing images before upload
+    const filePreviews = files.map((file) => URL.createObjectURL(file));
+    setPreviews(filePreviews);
   };
 
   const onCaptchaChange = (value) => {
@@ -47,11 +55,16 @@ const Contribute = ({ setContributing }) => {
     e.preventDefault();
     setLoading(true);
 
-    if (!captchaToken) return toast.error("Please verify reCAPTCHA");
-    if (!imageFiles) return toast.error("Please upload an image");
+    if (!captchaToken) {
+      setLoading(false);
+      return toast.error("Please verify reCAPTCHA");
+    }
+    if (!imageFiles) {
+      setLoading(false);
+      return toast.error("Please upload an image");
+    }
 
     const dataToSend = new FormData();
-
     dataToSend.append("name", formData.name);
     dataToSend.append("city", formData.city);
     dataToSend.append("phone", formData.phone);
@@ -98,182 +111,299 @@ const Contribute = ({ setContributing }) => {
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong");
+      recaptchaRef.current.reset();
+      setCaptchaToken("");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="bg-black/60 relative h-screen w-screen md:w-316">
-      <div className="md:w-150 md:left-80 w-100 left-3 bg-white absolute md:top-0.5 top-5 rounded-2xl">
-        <div className="flex justify-between items-center px-5 md:px-10">
-          <p></p>
-          <p className="text-2xl font-semibold text-center my-2">
-            Contribute to us
-          </p>
-          <RxCross2
-            className="text-2xl font-medium cursor-pointer"
+    <div className="fixed inset-0 z-100 flex items-center justify-center p-4 sm:p-6">
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+        onClick={() => setContributing(false)}
+      ></div>
+
+      {/* Main Modal */}
+      <div className="relative w-full max-w-2xl bg-white rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in duration-300">
+        {/* Sticky Header */}
+        <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md px-8 py-5 border-b border-slate-100 flex justify-between items-center">
+          <div>
+            <h2 className="text-2xl font-black text-slate-900 tracking-tight">
+              Contribute
+            </h2>
+            <p className="text-[10px] font-bold text-blue-600 uppercase tracking-widest">
+              Help fellow students find a home
+            </p>
+          </div>
+          <button
             onClick={() => setContributing(false)}
-          />
+            className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-400 hover:text-slate-900"
+          >
+            <RxCross2 size={24} />
+          </button>
         </div>
-        <ul className="flex md:gap-4 gap-2 justify-center items-center">
-          {items.map((item, index) => (
-            <li
-              key={index}
-              onClick={() => {
-                setType(`${item}`), setActive(`${item}`);
-              }}
-              className={`md:px-4 md:py-1 px-3 py-2 font-medium rounded-2xl cursor-pointer text-white font-meduim ${
-                active === `${item}` ? "bg-blue-600" : "bg-blue-400"
-              }`}
-            >
-              {item}
-            </li>
-          ))}
-        </ul>
-        <form
-          onSubmit={onSubmitHandler}
-          className="flex md:px-8 py-2 px-4 flex-col gap-2"
-        >
-          <input
-            className="px-4 py-2 md:py-1 outline-none rounded-md shadow-md bg-gray-200"
-            type="text"
-            name="name"
-            onChange={onChangeHandler}
-            placeholder={`${type} Name`}
-            required
-          />
 
-          <div className="flex items-center justify-between gap-2">
-            <input
-              onChange={onChangeHandler}
-              className="w-full px-4 py-2 md:py-1 outline-none rounded-md shadow-md bg-gray-200"
-              type="text"
-              name="city"
-              placeholder="City Name"
-              required
-            />
-            {type === "College" && (
-              <input
-                className="w-50 md:w-75 px-4 py-2 md:py-1 outline-none rounded-md shadow-md bg-gray-200"
-                type="text"
-                onChange={onChangeHandler}
-                name="url"
-                placeholder="College Website URL"
-              />
-            )}
-            {(type === "Hostel" || type === "PG/Flat") && (
-              <select
-                name="gender"
-                onChange={onChangeHandler}
-                className="bg-gray-200 rounded-md px-4 py-2 md:py-1 shadow-md outline-none"
+        {/* Scrollable Body */}
+        <div className="overflow-y-auto p-6 md:p-8 custom-scrollbar">
+          {/* Category Tabs */}
+          <div className="flex p-1.5 bg-slate-100 rounded-2xl mb-8">
+            {items.map((item) => (
+              <button
+                key={item}
+                onClick={() => {
+                  setType(item);
+                  setActive(item);
+                }}
+                className={`flex-1 py-2.5 text-xs font-bold uppercase tracking-tight rounded-xl transition-all ${
+                  active === item
+                    ? "bg-white text-blue-600 shadow-sm"
+                    : "text-slate-500 hover:text-slate-700"
+                }`}
               >
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-              </select>
-            )}
+                {item}
+              </button>
+            ))}
           </div>
 
-          <div className="flex items-center justify-between gap-2">
-            <input
-              className="flex-1 px-4 py-2 md:py-1 outline-none rounded-md shadow-md bg-gray-200"
-              type="text"
-              onChange={onChangeHandler}
-              name="phone"
-              placeholder="Phone Number"
-            />
-            {type !== "College" && (
-              <select
-                name="nonveg"
-                onChange={onChangeHandler}
-                className="bg-gray-200 rounded-md px-4 py-2 md:py-1 shadow-md outline-none"
-              >
-                <option value="false">Veg Only</option>
-                <option value="true">Non-Veg</option>
-              </select>
+          <form onSubmit={onSubmitHandler} className="space-y-6">
+            {/* Basic Info Section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="md:col-span-2 space-y-1.5">
+                <label className="text-[10px] font-black text-slate-400 uppercase ml-1">
+                  Entity Name
+                </label>
+                <input
+                  className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all font-medium placeholder:text-slate-400"
+                  type="text"
+                  name="name"
+                  onChange={onChangeHandler}
+                  placeholder={`${type} Name`}
+                  required
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black text-slate-400 uppercase ml-1">
+                  City
+                </label>
+                <input
+                  className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all font-medium placeholder:text-slate-400"
+                  type="text"
+                  name="city"
+                  onChange={onChangeHandler}
+                  placeholder="e.g. Lucknow"
+                  required
+                />
+              </div>
+
+              {type === "College" ? (
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black text-slate-400 uppercase ml-1">
+                    Official Website
+                  </label>
+                  <input
+                    className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all font-medium placeholder:text-slate-400"
+                    type="text"
+                    onChange={onChangeHandler}
+                    name="url"
+                    placeholder="https://..."
+                  />
+                </div>
+              ) : (
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black text-slate-400 uppercase ml-1">
+                    Gender Specification
+                  </label>
+                  <select
+                    name="gender"
+                    onChange={onChangeHandler}
+                    className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all font-medium appearance-none"
+                  >
+                    <option value="male">Boys / Male</option>
+                    <option value="female">Girls / Female</option>
+                  </select>
+                </div>
+              )}
+            </div>
+
+            {/* Middle Section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black text-slate-400 uppercase ml-1">
+                  Phone Number
+                </label>
+                <input
+                  className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all font-medium placeholder:text-slate-400"
+                  type="text"
+                  onChange={onChangeHandler}
+                  name="phone"
+                  placeholder="Contact Details"
+                />
+              </div>
+
+              {type !== "College" && (
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black text-slate-400 uppercase ml-1">
+                    Dietary Category
+                  </label>
+                  <select
+                    name="nonveg"
+                    onChange={onChangeHandler}
+                    className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all font-medium appearance-none"
+                  >
+                    <option value="false">Vegetarian Only</option>
+                    <option value="true">Non-Vegetarian Available</option>
+                  </select>
+                </div>
+              )}
+            </div>
+
+            {type === "College" ? (
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black text-slate-400 uppercase ml-1">
+                  About the Institution
+                </label>
+                <textarea
+                  name="about"
+                  onChange={onChangeHandler}
+                  className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all font-medium h-28 resize-none"
+                  placeholder="Briefly describe the campus culture and facilities..."
+                ></textarea>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="md:col-span-2 space-y-1.5">
+                  <label className="text-[10px] font-black text-slate-400 uppercase ml-1">
+                    Nearby College/Landmark
+                  </label>
+                  <input
+                    type="text"
+                    onChange={onChangeHandler}
+                    name="college"
+                    placeholder="Closest University"
+                    className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all font-medium"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black text-slate-400 uppercase ml-1">
+                    Pricing (₹)
+                  </label>
+                  <input
+                    type="number"
+                    onChange={onChangeHandler}
+                    name="price"
+                    placeholder="Monthly"
+                    className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all font-medium"
+                  />
+                </div>
+              </div>
             )}
-          </div>
-          {type === "College" && (
-            <textarea
-              name="about"
-              onChange={onChangeHandler}
-              className="px-4 py-2 md:py-1 outline-none rounded-md shadow-md bg-gray-200 h-20"
-              placeholder="Describe the college..."
-            ></textarea>
-          )}
-          {type !== "College" && (
-            <div className="flex gap-2">
+
+            {/* Location Metadata Group */}
+            <div className="p-6 bg-blue-50/50 border border-blue-100 rounded-3xl space-y-4">
+              <p className="text-[10px] font-black text-blue-600 uppercase flex items-center gap-2">
+                <FaMapMarkedAlt /> Location Metadata
+              </p>
+              <div className="grid grid-cols-2 gap-3">
+                <input
+                  className="w-full px-4 py-2.5 bg-white border border-blue-100 rounded-xl outline-none text-sm font-medium focus:border-blue-400"
+                  type="text"
+                  onChange={onChangeHandler}
+                  name="lat"
+                  placeholder="Latitude"
+                />
+                <input
+                  className="w-full px-4 py-2.5 bg-white border border-blue-100 rounded-xl outline-none text-sm font-medium focus:border-blue-400"
+                  type="text"
+                  onChange={onChangeHandler}
+                  name="lng"
+                  placeholder="Longitude"
+                />
+              </div>
               <input
+                className="w-full px-4 py-2.5 bg-white border border-blue-100 rounded-xl outline-none text-sm font-medium focus:border-blue-400"
                 type="text"
                 onChange={onChangeHandler}
-                name="college"
-                placeholder="Nearby College Name"
-                className="flex-1 px-4 py-2 md:py-1 outline-none rounded-md shadow-md bg-gray-200"
-              />
-              <input
-                type="number"
-                onChange={onChangeHandler}
-                name="price"
-                placeholder="Price/Rent"
-                className="w-32 px-4 py-2 md:py-1 outline-none rounded-md shadow-md bg-gray-200"
+                name="address"
+                placeholder="Full Street Address"
               />
             </div>
-          )}
-          <div className="flex items-center gap-2">
-            <input
-              className="px-4 py-2 md:py-1 outline-none w-full rounded-md shadow-md bg-gray-200"
-              type="text"
-              onChange={onChangeHandler}
-              name="lat"
-              placeholder="Lattitude"
-            />
-            <input
-              className="px-4 py-2 md:py-1 outline-none w-full rounded-md shadow-md bg-gray-200"
-              type="text"
-              onChange={onChangeHandler}
-              name="lng"
-              placeholder="Longitude"
-            />
-          </div>
 
-          <input
-            className="px-4 py-2 md:py-1 outline-none rounded-md shadow-md bg-gray-200"
-            type="text"
-            onChange={onChangeHandler}
-            name="address"
-            placeholder="Full Address"
-          />
+            {/* Image Upload Section */}
+            <div className="space-y-3">
+              <div className="flex justify-between items-end px-1">
+                <label className="text-[10px] font-black text-slate-400 uppercase">
+                  Gallery Upload
+                </label>
+                <span className="text-[10px] font-bold text-red-400">
+                  {type === "College"
+                    ? "Single Image Only"
+                    : "Multiple Images Allowed"}
+                </span>
+              </div>
 
-          <div className="flex flex-col gap-1">
-            {type === "College" ? (
-              <label className="text-xs text-red-500 ml-1">
-                Upload only one Image
-              </label>
-            ) : (
-              <label className="text-xs text-red-500 ml-1">Upload Images</label>
-            )}
-            <input
-              type="file"
-              multiple
-              onChange={onFileChange}
-              className="text-sm"
-            />
-          </div>
+              <div className="relative border-2 border-dashed border-slate-200 rounded-3xl p-8 hover:bg-slate-50 hover:border-blue-400 transition-all group cursor-pointer">
+                <input
+                  type="file"
+                  multiple={type !== "College"}
+                  onChange={onFileChange}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
+                />
+                <div className="flex flex-col items-center text-center space-y-2">
+                  <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <FaCloudUploadAlt size={24} />
+                  </div>
+                  <p className="text-sm font-bold text-slate-600">
+                    Drop images here or click to browse
+                  </p>
+                  <p className="text-[10px] text-slate-400 font-medium">
+                    Supported formats: JPG, PNG (Max 5MB per file)
+                  </p>
+                </div>
+              </div>
 
-          <div className="scale-90 origin-left">
-            <ReCAPTCHA
-              sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-              onChange={onCaptchaChange}
-            />
-          </div>
+              {/* Preview Grid */}
+              {previews.length > 0 && (
+                <div className="flex gap-2 overflow-x-auto py-2 px-1">
+                  {previews.map((src, i) => (
+                    <img
+                      key={i}
+                      src={src}
+                      className="h-16 w-16 object-cover rounded-xl border border-slate-200 shadow-sm"
+                      alt="preview"
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
 
-          <button
-            type="submit"
-            className="w-full py-2 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 transition-colors"
-          >
-            {loading ? "Contributing..." : "Submit Contribution"}
-          </button>
-        </form>
+            {/* Recaptcha & Submit */}
+            <div className="flex flex-col items-center gap-6 py-4">
+              <div className="scale-90 md:scale-100 origin-center">
+                <ReCAPTCHA
+                  ref={recaptchaRef}
+                  sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                  onChange={onCaptchaChange}
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className={`w-full py-4 rounded-2xl font-black uppercase tracking-widest text-sm shadow-xl transition-all active:scale-[0.98] ${
+                  loading
+                    ? "bg-slate-100 text-slate-400"
+                    : "bg-blue-600 text-white hover:bg-blue-700 shadow-blue-200"
+                }`}
+              >
+                {loading ? "Processing..." : "Submit Contribution"}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

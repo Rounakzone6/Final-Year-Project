@@ -85,7 +85,14 @@ const CollegeInCity = () => {
               </Link>
             ))
           ) : (
-            <p>No colleges found in this city.</p>
+            <div className="col-span-full py-20 text-center bg-slate-50 rounded-[3rem] border-2 border-dashed border-slate-200">
+              <p className="text-slate-400 font-bold text-lg">
+                No institutions found in {city} yet.
+              </p>
+              <p className="text-slate-400 text-sm italic mt-1">
+                Be the first to contribute one!
+              </p>
+            </div>
           )}
         </div>
       )}

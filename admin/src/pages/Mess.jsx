@@ -9,6 +9,9 @@ import {
   FaPhoneAlt,
   FaTrashAlt,
   FaPlus,
+  FaUtensils,
+  FaMapMarkerAlt,
+  FaUniversity,
 } from "react-icons/fa";
 
 const Mess = () => {
@@ -16,132 +19,161 @@ const Mess = () => {
     useContext(AppContext);
 
   const removemess = async (id) => {
-    if (!window.confirm("Are you sure you want to remove this mess?")) return;
+    if (!window.confirm("Are you sure you want to remove this mess service?"))
+      return;
     try {
       const res = await axios.delete(`${backendUrl}/mess/delete/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.data.success) {
-        toast.success("mess removed successfully");
+        toast.success("Mess service removed successfully");
         setmessList((prev) => prev.filter((mess) => mess._id !== id));
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || error.message);
     }
   };
 
   const openInMaps = (lng, lat) => {
-    // Standard Google Maps Link: https://www.google.com/maps?q=lat,lng
     const url = `https://www.google.com/maps?q=${lat},${lng}`;
     window.open(url, "_blank");
   };
 
   return (
-    <div className="w-full md:p-4 p-2">
-      <div className="flex justify-between items-center mb-6">
+    <div className="p-4 md:p-8 bg-slate-50 min-h-screen">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">
-            messs/Flats Management
+          <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
+            <FaUtensils className="text-orange-500 shrink-0" /> Mess & Food
+            Services
           </h1>
-          <p className="text-gray-500 text-xs">
-            View and manage all registered messs
+          <p className="text-slate-500 text-sm mt-1">
+            Manage dining halls and tiffin providers near campuses.
           </p>
         </div>
         <NavLink
-          className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg font-semibold transition-all shadow-md flex items-center gap-2"
+          className="w-full sm:w-auto bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-xl font-bold transition-all shadow-lg shadow-orange-100 flex items-center justify-center gap-2 active:scale-95"
           to="/mess/add"
         >
-          <FaPlus /> Add mess
+          <FaPlus /> Add Mess
         </NavLink>
       </div>
-      <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
-        <div className="hidden md:grid grid-cols-[0.5fr_2fr_3fr_1fr_1.5fr_1fr_1fr_0.5fr] bg-gray-50 border-b border-gray-200 px-4 py-3 text-sm font-bold text-gray-600 uppercase tracking-wider">
+      <div className="bg-white rounded-2xl md:rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+        <div className="hidden md:grid grid-cols-[0.5fr_2fr_2.5fr_1fr_1.5fr_1fr_1fr_0.5fr] bg-slate-50/50 border-b border-slate-100 px-8 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
           <p>S.No</p>
-          <p>mess Name</p>
-          <p>College</p>
+          <p>Service Name</p>
+          <p className="text-center">Associated College</p>
           <p>City</p>
           <p>Contact</p>
-          <p>Price</p>
-          <p className="text-center">Location</p>
+          <p>Monthly Plan</p>
+          <p className="text-center">Map</p>
           <p className="text-right">Action</p>
         </div>
 
         {loading ? (
-          <div className="p-10 text-center text-gray-500 font-medium">
-            Loading messs...
+          <div className="p-20 text-center flex flex-col items-center">
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-orange-500 mb-4"></div>
+            <p className="text-slate-400 font-medium">
+              Loading food services...
+            </p>
           </div>
         ) : messList.length > 0 ? (
-          messList.map((mess, index) => (
-            <div
-              key={mess._id}
-              className="md:grid grid-cols-[0.5fr_2fr_3fr_1fr_1.5fr_1fr_1fr_0.5fr] px-4 py-1 border-b border-gray-100 items-center hover:bg-blue-50/30 transition-colors"
-            >
-              <p className="text-gray-400 font-medium">#{index + 1}</p>
-
-              <NavLink
-                to={`/mess/${mess._id}`}
-                className="text-gray-900 hover:underline font-medium"
+          <div className="divide-y divide-slate-100">
+            {messList.map((mess, index) => (
+              <div
+                key={mess._id}
+                className="flex flex-col md:grid md:grid-cols-[0.5fr_2fr_2.5fr_1fr_1.5fr_1fr_1fr_0.5fr] px-5 py-2 md:px-8 md:py-2 items-start md:items-center hover:bg-orange-50/20 transition-colors group"
               >
-                {mess.name}
-              </NavLink>
-
-              <p className="text-gray-600 truncate font-medium capitalize">
-                <span className="md:hidden font-medium mr-1 text-xs text-gray-400">
-                  COLLEGE:
-                </span>
-                {mess.college?.name}
-              </p>
-              <p className="text-gray-600 font-medium capitalize">
-                <span className="md:hidden font-medium mr-1 text-xs text-gray-400">
-                  CITY:
-                </span>
-                {mess.city?.name}
-              </p>
-
-              <p className="text-gray-600 flex gap-1 items-center text-sm">
-                <span className="md:hidden font-medium mr-1 text-xs text-gray-400">
-                  CONTACT:
-                </span>
-                <FaPhoneAlt className="text-blue-600" />
-                {mess.phone}
-              </p>
-
-              <div className="truncate pr-4">
-                <p className="text-blue-500 hover:text-blue-700 flex items-center text-sm">
-                  <FaRupeeSign />
-                  {mess.price}
+                <p className="hidden md:block font-bold text-slate-300">
+                  {String(index + 1).padStart(2, "0")}
                 </p>
+                <div className="w-full flex justify-between items-start md:block">
+                  <div className="flex flex-col">
+                    <NavLink
+                      to={`/mess/${mess._id}`}
+                      className="text-lg w-50 truncate font-bold text-slate-800 hover:text-blue-600 transition-colors leading-tight"
+                    >
+                      {mess.name}
+                    </NavLink>
+                    <div className="flex items-center gap-1.5 mt-1 md:hidden">
+                      <FaMapMarkerAlt className="text-slate-400" size={10} />
+                      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                        {mess.city?.name}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => removemess(mess._id)}
+                    className="md:hidden p-2 text-red-400"
+                  >
+                    <FaTrashAlt size={16} />
+                  </button>
+                </div>
+                <div className="flex items-center gap-2 text-slate-500 mt-3 md:mt-0">
+                  <FaUniversity
+                    className="text-slate-300 hidden md:block"
+                    size={14}
+                  />
+                  <p className="text-sm font-medium line-clamp-1">
+                    <span className="md:hidden text-[10px] font-black text-slate-300 uppercase block mb-0.5">
+                      Campus
+                    </span>
+                    {mess.college?.name || "Multiple Institutions"}
+                  </p>
+                </div>
+                <div className="hidden md:flex items-center gap-1 text-slate-400 font-bold text-[10px] uppercase tracking-tighter">
+                  {mess.city?.name}
+                </div>
+                <div className="flex items-center gap-2 text-slate-600 mt-2 md:mt-0">
+                  <div className="p-1.5 bg-orange-50 text-orange-600 rounded-lg shrink-0">
+                    <FaPhoneAlt size={10} />
+                  </div>
+                  <p className="text-sm font-medium">{mess.phone}</p>
+                </div>
+                <div className="mt-2 md:mt-0">
+                  <span className="md:hidden text-[10px] font-black text-slate-300 uppercase block mb-1">
+                    Pricing
+                  </span>
+                  <div className="flex items-center text-slate-900 font-black bg-slate-100 w-fit px-3 py-1.5 rounded-xl">
+                    <FaRupeeSign size={11} />
+                    <span>{mess.price}</span>
+                  </div>
+                </div>
+                <div className="w-full md:w-auto mt-3 md:mt-0 flex justify-center">
+                  <button
+                    onClick={() =>
+                      openInMaps(
+                        mess.locations.coordinates[0],
+                        mess.locations.coordinates[1]
+                      )
+                    }
+                    className="w-full md:w-auto flex items-center justify-center gap-2 p-3 text-orange-500 bg-orange-50 md:bg-transparent md:text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
+                  >
+                    <FaDirections size={20} />
+                    <span className="md:hidden font-bold text-sm">
+                      Directions
+                    </span>
+                  </button>
+                </div>
+                <div className="hidden md:flex justify-end">
+                  <button
+                    onClick={() => removemess(mess._id)}
+                    className="p-3 text-slate-300 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
+                  >
+                    <FaTrashAlt size={16} />
+                  </button>
+                </div>
               </div>
-
-              <div className="flex justify-center">
-                <button
-                  onClick={() =>
-                    openInMaps(
-                      mess.locations.coordinates[0],
-                      mess.locations.coordinates[1]
-                    )
-                  }
-                  className="bg-blue-100 text-blue-600 p-2 rounded-full hover:bg-blue-200 cursor-pointer transition-all group"
-                  title="View on Maps"
-                >
-                  <FaDirections />
-                </button>
-              </div>
-
-              <div className="flex justify-end">
-                <button
-                  onClick={() => removemess(mess._id)}
-                  className="text-red-400 hover:text-red-600 p-2 transition-colors"
-                  title="Delete mess"
-                >
-                  <FaTrashAlt />
-                </button>
-              </div>
-            </div>
-          ))
+            ))}
+          </div>
         ) : (
-          <div className="p-10 text-center text-gray-400 italic">
-            No messs found in the database.
+          <div className="p-20 text-center">
+            <div className="bg-slate-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-200">
+              <FaUtensils size={24} />
+            </div>
+            <p className="text-slate-400 font-medium italic">
+              No mess services found.
+            </p>
           </div>
         )}
       </div>

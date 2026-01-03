@@ -1,15 +1,28 @@
 import { useContext, useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
+import {
+  FaPhoneAlt,
+  FaUtensils,
+  FaUsers,
+  FaChevronLeft,
+  FaChevronRight,
+} from "react-icons/fa";
 import AppContext from "@/contexts/AppContext";
 import CityListInHostelPage from "@/components/city/CityListInHostelPage";
 
 const Hostel = () => {
-  const { hostelList, navigate, location, loading } = useContext(AppContext);
+  const { hostelList, loading } = useContext(AppContext);
+  const location = useLocation();
+
+  // State management
   const [filter, setFilter] = useState("All");
   const [filterGender, setFilterGender] = useState("All");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 15;
 
   const isMainPage = location.pathname === "/hostel";
 
+  // Logic: Filter first
   const filteredHostels = hostelList.filter((h) => {
     const matchesFood =
       filter === "All" ||
@@ -24,12 +37,35 @@ const Hostel = () => {
     return matchesFood && matchesGender;
   });
 
+  // Pagination Logic
+  const totalPages = Math.ceil(filteredHostels.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredHostels.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Batch updates for Filter + Page reset
+  const handleGenderFilter = (val) => {
+    setFilterGender(val);
+    setCurrentPage(1);
+  };
+
+  const handleFoodFilter = (val) => {
+    setFilter(val);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   if (loading)
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-bounce text-blue-600 font-bold">
+      <div className="flex flex-col justify-center items-center h-64 gap-4">
+        <div className="w-10 h-10 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin"></div>
+        <p className="text-blue-600 font-bold animate-pulse">
           Loading Hostels...
-        </div>
+        </p>
       </div>
     );
 
@@ -37,27 +73,29 @@ const Hostel = () => {
     <>
       <CityListInHostelPage />
       {isMainPage ? (
-        <div className="max-w-7xl mx-auto md:p-6 p-4">
-          <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+        <div className="max-w-7xl mx-auto p-3 md:p-8 bg-slate-50 min-h-screen">
+          {/* Header & Filter Controls */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-6">
             <div>
-              <h1 className="text-3xl font-extrabold text-gray-800">
+              <h1 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">
                 Nearby Hostels
               </h1>
-              <p className="text-gray-500">
+              <p className="text-slate-500 text-sm">
                 Find the perfect stay near your college
               </p>
             </div>
 
-            <div className="flex gap-18 items-center">
-              <div className="flex bg-gray-100 p-1 rounded-lg">
+            <div className="flex flex-wrap gap-3 items-center">
+              {/* Gender Filter */}
+              <div className="flex bg-slate-200/50 p-1 rounded-xl backdrop-blur-sm">
                 {["All", "Boy's", "Girl's"].map((type) => (
                   <button
                     key={type}
-                    onClick={() => setFilterGender(type)}
-                    className={`md:px-4 md:py-2 px-2 py-1 text-sm rounded-md font-medium transition-all ${
+                    onClick={() => handleGenderFilter(type)}
+                    className={`px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm rounded-lg font-bold transition-all ${
                       filterGender === type
-                        ? "bg-white shadow text-blue-600"
-                        : "text-gray-600 hover:text-blue-500"
+                        ? "bg-white shadow-sm text-blue-600"
+                        : "text-slate-500 hover:text-blue-500"
                     }`}
                   >
                     {type}
@@ -65,15 +103,16 @@ const Hostel = () => {
                 ))}
               </div>
 
-              <div className="flex bg-gray-100 p-1 rounded-lg">
+              {/* Food Filter */}
+              <div className="flex bg-slate-200/50 p-1 rounded-xl backdrop-blur-sm">
                 {["All", "Veg Only", "Non-Veg"].map((type) => (
                   <button
                     key={type}
-                    onClick={() => setFilter(type)}
-                    className={`md:px-4 md:py-2 px-2 py-1 rounded-md text-sm font-medium transition-all ${
+                    onClick={() => handleFoodFilter(type)}
+                    className={`px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm rounded-lg font-bold transition-all ${
                       filter === type
-                        ? "bg-white shadow text-blue-600"
-                        : "text-gray-600 hover:text-blue-500"
+                        ? "bg-white shadow-sm text-blue-600"
+                        : "text-slate-500 hover:text-blue-500"
                     }`}
                   >
                     {type}
@@ -83,64 +122,73 @@ const Hostel = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredHostels.map((hostel) => (
+          {/* Grid Layout: 2 col mobile, 3 col tablet */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
+            {currentItems.map((hostel) => (
               <Link
                 to={`/hostel/${hostel._id}`}
                 key={hostel._id}
-                className="group bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden"
+                className="group bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-blue-200/40 transition-all duration-300 overflow-hidden flex flex-col"
               >
-                <div className="relative">
+                <div className="relative aspect-4/3 overflow-hidden">
                   <img
-                    className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     src={hostel.image[0]}
                     alt={hostel.name}
                     loading="lazy"
                   />
-                  <div className="absolute top-3 left-3">
+
+                  {/* Food Badge */}
+                  <div className="absolute top-2 left-2">
                     <span
-                      className={`px-3 py-1 rounded-full text-xs font-bold uppercase shadow-sm ${
+                      className={`px-2 py-1 rounded-lg text-[10px] font-black uppercase shadow-lg backdrop-blur-md ${
                         hostel.nonveg
-                          ? "bg-red-100 text-red-600"
-                          : "bg-green-100 text-green-600"
+                          ? "bg-red-500/90 text-white"
+                          : "bg-green-500/90 text-white"
                       }`}
                     >
-                      {hostel.nonveg ? "● Non-Veg" : "● Pure Veg"}
+                      {hostel.nonveg ? "Non-Veg" : "Pure Veg"}
                     </span>
                   </div>
-                  <div className="absolute backdrop-blur-md bg-white/10 border border-white/10 px-4 py-1 rounded-3xl bottom-2 right-2 shadow-lg">
-                    <p className="text-blue-600 font-extrabold text-lg">
+
+                  {/* Price Tag */}
+                  <div className="absolute bottom-2 right-2 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-xl shadow-lg border border-white/50">
+                    <p className="text-blue-600 font-black text-sm md:text-base">
                       ₹{hostel.price}
-                      <span className="text-xs text-gray-200 font-normal ml-1">
+                      <span className="text-[10px] text-slate-400 font-medium ml-0.5">
                         /mo
                       </span>
                     </p>
                   </div>
                 </div>
 
-                <div className="py-2 px-4">
-                  <h3 className="text-lg font-bold text-gray-900 leading-tight mb-2">
+                <div className="p-3 flex-1 flex flex-col">
+                  <h3 className="text-sm md:text-lg font-bold text-slate-900 leading-tight mb-2 line-clamp-1">
                     {hostel.name}
                   </h3>
-                  <div className="space-y-1 mb-2">
-                    <p className="text-sm text-blue-600 font-medium flex items-center gap-1">
-                      🎓 {hostel.college?.name || "Generic College"}
+
+                  <div className="space-y-1 mb-4">
+                    <p className="text-[10px] md:text-sm text-blue-600 font-bold flex items-center gap-1 line-clamp-1">
+                      <FaUniversity size={12} />{" "}
+                      {hostel.college?.name || "Generic College"}
                     </p>
-                    <p className="text-sm text-gray-500 capitalize flex items-center gap-1">
-                      📍 {hostel.city?.name}
+                    <p className="text-[10px] md:text-xs text-slate-400 font-medium capitalize flex items-center gap-1">
+                      <FaMapMarkerAlt size={12} className="text-red-400" />{" "}
+                      {hostel.city?.name}
                     </p>
                   </div>
 
-                  <div className="pt-2 border-t border-gray-50 flex items-center justify-between">
-                    <p
+                  <div className="flex items-center justify-between gap-2">
+                    <button
                       onClick={(e) => {
-                        navigate(`tel:${hostel.phone}`), e.stopPropagation();
+                        e.preventDefault();
+                        window.location.href = `tel:${hostel.phone}`;
                       }}
-                      className="flex items-center gap-2 text-sm font-bold text-gray-700 hover:text-blue-600 transition-colors"
+                      className="p-2.5 rounded-xl bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-all active:scale-90"
                     >
-                      📞 Contact
-                    </p>
-                    <button className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors shadow-md shadow-blue-100">
+                      <FaPhoneAlt size={14} />
+                    </button>
+                    <button className="flex-1 bg-blue-600 text-white py-2 rounded-xl text-xs md:text-sm font-bold hover:bg-blue-700 transition-all shadow-md shadow-blue-100 active:scale-95">
                       View Rooms
                     </button>
                   </div>
@@ -149,9 +197,48 @@ const Hostel = () => {
             ))}
           </div>
 
+          {/* Pagination */}
+          {!loading && totalPages > 1 && (
+            <div className="mt-12 flex justify-center items-center gap-2">
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="p-3 rounded-xl bg-white border border-slate-200 text-slate-600 disabled:opacity-30 hover:bg-slate-50"
+              >
+                <FaChevronLeft size={14} />
+              </button>
+
+              <div className="flex items-center gap-1">
+                {[...Array(totalPages)].map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => handlePageChange(i + 1)}
+                    className={`w-10 h-10 rounded-xl font-bold text-sm transition-all ${
+                      currentPage === i + 1
+                        ? "bg-blue-600 text-white shadow-lg shadow-blue-200"
+                        : "bg-white text-slate-500 hover:bg-blue-50"
+                    }`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+              </div>
+
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="p-3 rounded-xl bg-white border border-slate-200 text-slate-600 disabled:opacity-30 hover:bg-slate-50"
+              >
+                <FaChevronRight size={14} />
+              </button>
+            </div>
+          )}
+
           {filteredHostels.length === 0 && (
-            <div className="text-center py-20 text-gray-400">
-              No hostels found in this category.
+            <div className="text-center py-20 bg-white rounded-4xl border border-dashed border-slate-200">
+              <p className="text-slate-400 font-medium italic">
+                No hostels match your current filters.
+              </p>
             </div>
           )}
         </div>
@@ -161,5 +248,9 @@ const Hostel = () => {
     </>
   );
 };
+
+// Internal icon mapping helpers
+const FaUniversity = (props) => <span {...props}>🎓</span>;
+const FaMapMarkerAlt = (props) => <span {...props}>📍</span>;
 
 export default Hostel;

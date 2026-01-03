@@ -161,7 +161,7 @@ const HostelDetails = () => {
             </p>
             <p className="font-bold text-gray-800">{hostel.name}</p>
           </div>
-          <div className="flex gap-3 w-full sm:w-auto">
+          <div className="flex md:gap-3 gap-1 w-full sm:w-auto">
             <button
               onClick={() =>
                 openInMaps(
@@ -169,20 +169,20 @@ const HostelDetails = () => {
                   hostel.locations.coordinates[1]
                 )
               }
-              className="flex text-white justify-center gap-2 items-center bg-blue-600 px-6 py-3 rounded-2xl font-bold hover:bg-blue-700"
+              className="flex text-white justify-center gap-2 items-center bg-blue-600 md:px-6 md:py-3 px-4 py-2 rounded-2xl font-medium md:font-bold hover:bg-blue-700"
             >
               <FaDirections /> <span>Directions</span>
             </button>
             <Link
               to={`tel:${hostel.phone}`}
-              className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-gray-900 text-white px-6 py-3 rounded-2xl font-bold hover:bg-black transition-all"
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-gray-900 text-white md:px-6 md:py-3 px-4 py-2 rounded-2xl font-medium md:font-bold hover:bg-black transition-all"
             >
               <FaPhoneAlt /> Call Now
             </Link>
             <Link
               to={`https://wa.me/${hostel.phone}`}
               target="_blank"
-              className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-green-500 text-white px-6 py-3 rounded-2xl font-bold hover:bg-green-600 transition-all"
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-green-500 text-white md:px-6 md:py-3 px-4 py-2 rounded-2xl font-medium md:font-bold hover:bg-green-600 transition-all"
             >
               <FaWhatsapp className="text-xl" /> WhatsApp
             </Link>

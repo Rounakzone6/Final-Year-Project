@@ -9,6 +9,9 @@ import {
   FaPhoneAlt,
   FaTrashAlt,
   FaPlus,
+  FaHotel,
+  FaUniversity,
+  FaMapMarkerAlt,
 } from "react-icons/fa";
 
 const Hostel = () => {
@@ -16,7 +19,8 @@ const Hostel = () => {
     useContext(AppContext);
 
   const removeHostel = async (id) => {
-    if (!window.confirm("Are you sure you want to remove this hostel?")) return;
+    if (!window.confirm("Are you sure you want to remove this hostel listing?"))
+      return;
     try {
       const res = await axios.delete(`${backendUrl}/hostel/delete/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -26,122 +30,147 @@ const Hostel = () => {
         setHostelList((prev) => prev.filter((hostel) => hostel._id !== id));
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || error.message);
     }
   };
 
   const openInMaps = (lng, lat) => {
-    // Standard Google Maps Link: https://www.google.com/maps?q=lat,lng
     const url = `https://www.google.com/maps?q=${lat},${lng}`;
     window.open(url, "_blank");
   };
 
   return (
-    <div className="w-full md:p-4 p-2">
-      <div className="flex justify-between items-center mb-6">
+    <div className="p-4 md:p-8 bg-slate-50 min-h-screen">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">
-            Hostel Management
+          <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
+            <FaHotel className="text-blue-600 shrink-0" /> Hostel Management
           </h1>
-          <p className="text-gray-500 text-xs">
-            View and manage all registered hostels
+          <p className="text-slate-500 text-sm mt-1">
+            Monitor student accommodations and rental pricing.
           </p>
         </div>
         <NavLink
-          className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg font-semibold transition-all shadow-md flex items-center gap-2"
+          className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold transition-all shadow-lg shadow-blue-100 flex items-center justify-center gap-2 active:scale-95"
           to="/hostel/add"
         >
-          <FaPlus /> Add Hostel
+          <FaPlus /> Add New Hostel
         </NavLink>
       </div>
-      <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
-        <div className="hidden md:grid grid-cols-[0.5fr_2fr_3fr_1fr_1.5fr_1fr_1fr_0.5fr] bg-gray-50 border-b border-gray-200 px-4 py-3 text-sm font-bold text-gray-600 uppercase tracking-wider">
+      <div className="bg-white rounded-2xl md:rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+        <div className="hidden md:grid grid-cols-[0.5fr_2fr_2.5fr_1fr_1.5fr_1.5fr_1fr_0.5fr] bg-slate-50/50 border-b border-slate-100 px-8 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
           <p>S.No</p>
-          <p>Hostel Name</p>
-          <p>College</p>
+          <p>Accommodation</p>
+          <p>Institution</p>
           <p>City</p>
           <p>Contact</p>
-          <p>Price</p>
-          <p className="text-center">Location</p>
+          <p>Monthly Rent</p>
+          <p className="pl-3">Map</p>
           <p className="text-right">Action</p>
         </div>
 
         {loading ? (
-          <div className="p-10 text-center text-gray-500 font-medium">
-            Loading hostels...
+          <div className="p-20 text-center flex flex-col items-center">
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mb-4"></div>
+            <p className="text-slate-400 font-medium">
+              Loading accommodations...
+            </p>
           </div>
         ) : hostelList.length > 0 ? (
-          hostelList.map((hostel, index) => (
-            <div
-              key={hostel._id}
-              className="md:grid grid-cols-[0.5fr_2fr_3fr_1fr_1.5fr_1fr_1fr_0.5fr] px-4 py-1 border-b border-gray-100 items-center hover:bg-blue-50/30 transition-colors"
-            >
-              <p className="text-gray-400 font-medium">#{index + 1}</p>
-
-              <NavLink
-                to={`/hostel/${hostel._id}`}
-                className="text-gray-900 hover:underline font-medium"
+          <div className="divide-y divide-slate-100">
+            {hostelList.map((hostel, index) => (
+              <div
+                key={hostel._id}
+                className="flex flex-col md:grid md:grid-cols-[0.5fr_2fr_2.5fr_1fr_1.5fr_1.5fr_1fr_0.5fr] px-5 py-3 md:px-8 md:py-2 items-start md:items-center hover:bg-slate-50/30 transition-colors"
               >
-                {hostel.name}
-              </NavLink>
-
-              <p className="text-gray-600 truncate font-medium capitalize">
-                <span className="md:hidden font-medium mr-1 text-xs text-gray-400">
-                  COLLEGE:
-                </span>
-                {hostel.college?.name}
-              </p>
-              <p className="text-gray-600 font-medium capitalize">
-                <span className="md:hidden font-medium mr-1 text-xs text-gray-400">
-                  CITY:
-                </span>
-                {hostel.city?.name}
-              </p>
-
-              <p className="text-gray-600 flex gap-1 items-center text-sm">
-                <span className="md:hidden font-medium mr-1 text-xs text-gray-400">
-                  CONTACT:
-                </span>
-                <FaPhoneAlt className="text-blue-600" />
-                {hostel.phone}
-              </p>
-
-              <div className="truncate pr-4">
-                <p className="text-blue-500 hover:text-blue-700 flex items-center text-sm">
-                  <FaRupeeSign />
-                  {hostel.price}
+                <p className="hidden md:block font-bold text-slate-300">
+                  {String(index + 1).padStart(2, "0")}
                 </p>
+                <div className="w-full flex justify-between items-start md:block">
+                  <div className="flex flex-col">
+                    <NavLink
+                      to={`/hostel/${hostel._id}`}
+                      className="text-lg font-bold text-slate-800 hover:text-blue-600 transition-colors leading-tight"
+                    >
+                      {hostel.name}
+                    </NavLink>
+                    <div className="flex items-center gap-1.5 mt-1 md:hidden">
+                      <FaMapMarkerAlt className="text-slate-400" size={10} />
+                      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                        {hostel.city?.name}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => removeHostel(hostel._id)}
+                    className="md:hidden p-2 text-red-400"
+                  >
+                    <FaTrashAlt size={16} />
+                  </button>
+                </div>
+                <div className="flex items-center gap-2 text-slate-500 mt-3 md:mt-0">
+                  <FaUniversity
+                    className="text-slate-300 hidden md:block"
+                    size={14}
+                  />
+                  <p className="text-sm font-medium line-clamp-1">
+                    <span className="md:hidden text-[10px] font-black text-slate-300 uppercase block mb-0.5">
+                      Institution
+                    </span>
+                    {hostel.college?.name || "Independent"}
+                  </p>
+                </div>
+                <p className="hidden md:block text-slate-400 font-bold text-xs uppercase tracking-tight">
+                  {hostel.city?.name}
+                </p>
+                <div className="flex items-center gap-2 text-slate-600 mt-4 md:mt-0">
+                  <div className="p-1.5 bg-blue-50 text-blue-600 rounded-lg shrink-0">
+                    <FaPhoneAlt size={10} />
+                  </div>
+                  <p className="text-sm font-medium">{hostel.phone}</p>
+                </div>
+                <div className="mt-4 md:mt-0">
+                  <span className="md:hidden text-[10px] font-black text-slate-300 uppercase block mb-1">
+                    Pricing
+                  </span>
+                  <div className="flex items-center text-emerald-600 font-black bg-emerald-50 w-fit px-3 py-1.5 rounded-xl">
+                    <FaRupeeSign size={12} />
+                    <span>{hostel.price}</span>
+                    <span className="text-[10px] ml-1 text-emerald-400 font-medium">
+                      /mo
+                    </span>
+                  </div>
+                </div>
+                <div className="w-full md:w-auto mt-6 md:mt-0">
+                  <button
+                    onClick={() =>
+                      openInMaps(
+                        hostel.locations.coordinates[0],
+                        hostel.locations.coordinates[1]
+                      )
+                    }
+                    className="w-full md:w-auto flex justify-center items-center gap-2 p-3 md:p-3 text-blue-500 bg-blue-50 md:bg-transparent md:text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
+                  >
+                    <FaDirections size={20} />
+                    <span className="md:hidden font-bold text-sm">
+                      View Location
+                    </span>
+                  </button>
+                </div>
+                <div className="hidden md:flex justify-end">
+                  <button
+                    onClick={() => removeHostel(hostel._id)}
+                    className="p-3 text-slate-300 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
+                  >
+                    <FaTrashAlt size={16} />
+                  </button>
+                </div>
               </div>
-
-              <div className="flex justify-center">
-                <button
-                  onClick={() =>
-                    openInMaps(
-                      hostel.locations.coordinates[0],
-                      hostel.locations.coordinates[1]
-                    )
-                  }
-                  className="bg-blue-100 text-blue-600 p-2 rounded-full hover:bg-blue-200 cursor-pointer transition-all group"
-                  title="View on Maps"
-                >
-                  <FaDirections />
-                </button>
-              </div>
-
-              <div className="flex justify-end">
-                <button
-                  onClick={() => removeHostel(hostel._id)}
-                  className="text-red-400 hover:text-red-600 p-2 transition-colors"
-                  title="Delete hostel"
-                >
-                  <FaTrashAlt />
-                </button>
-              </div>
-            </div>
-          ))
+            ))}
+          </div>
         ) : (
-          <div className="p-10 text-center text-gray-400 italic">
-            No hostels found in the database.
+          <div className="p-20 text-center text-slate-400 italic">
+            No hostel records currently available.
           </div>
         )}
       </div>

@@ -4,9 +4,7 @@ import axios from "axios";
 import AppContext from "@/contexts/AppContext";
 
 const AddMess = () => {
-  const { loading, setLoading, backendUrl } = useContext(AppContext);
-
-  // const [images, setImages] = useState([]);
+  const { loading, setLoading, backendUrl, token } = useContext(AppContext);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -28,39 +26,19 @@ const AddMess = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // const onImageChange = (e) => {
-  //   if (e.target.files) {
-  //     setImages(Array.from(e.target.files));
-  //   }
-  // };
-
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      // const data = new FormData();
-
-      // Object.keys(formData).forEach((key) => {
-      //   data.append(key, formData[key]);
-      // });
-
-      // if (images.length > 0) {
-      //   images.forEach((file) => {
-      //     data.append("image", file);
-      //   });
-      // } else {
-      //   toast.error("Please upload at least one image");
-      //   setLoading(false);
-      //   return;
-      // }
-
-      const res = await axios.post(`${backendUrl}/mess/add`, formData);
-      // const res = await axios.post(`${backendUrl}/mess/add`, formData, {
-      //   headers: { "Content-Type": "multipart/form-data" },
-      // });
+      const res = await axios.post(`${backendUrl}/mess/add`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
 
       if (res.data.success) {
-        toast.success(res.data.message);
+        toast.success(res.data.message || "Mess added successfully");
         setFormData({
           name: "",
           city: "",
@@ -75,7 +53,6 @@ const AddMess = () => {
           img2: "",
           img3: "",
         });
-        // setImages([]);
       } else {
         toast.error(res.data.message);
       }
@@ -87,137 +64,185 @@ const AddMess = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg mt-10">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Add New mess</h2>
-      <form
-        onSubmit={onSubmitHandler}
-        className="grid grid-cols-1 md:grid-cols-2 gap-4"
-      >
-        <input
-          className="border p-2 rounded"
-          name="name"
-          placeholder="Mess name"
-          value={formData.name}
-          onChange={onChangeHandler}
-          required
-        />
-        <input
-          className="border p-2 rounded"
-          name="city"
-          placeholder="City name"
-          value={formData.city}
-          onChange={onChangeHandler}
-          required
-        />
-        <input
-          className="border p-2 rounded"
-          name="college"
-          placeholder="College name (Optional)"
-          value={formData.college}
-          onChange={onChangeHandler}
-        />
-        <input
-          className="border p-2 rounded"
-          name="phone"
-          placeholder="Phone"
-          value={formData.phone}
-          onChange={onChangeHandler}
-        />
-        <input
-          className="border p-2 rounded"
-          name="price"
-          placeholder="Price"
-          value={formData.price}
-          onChange={onChangeHandler}
-        />
+    <div className="flex items-center justify-center p-4 sm:p-8">
+      <div className="w-full max-w-4xl bg-white rounded-3xl shadow-xl border border-slate-100 p-6 sm:p-10">
+        <div className="mb-8 border-b pb-6">
+          <h2 className="text-3xl font-bold text-slate-900">
+            Add New Mess / Canteen
+          </h2>
+          <p className="text-slate-500 mt-1">
+            Register a food service unit and its menu type.
+          </p>
+        </div>
 
-        {/* Coordinates Group */}
-        <input
-          className="border p-2 rounded"
-          name="lat"
-          placeholder="Latitude"
-          value={formData.lat}
-          onChange={onChangeHandler}
-        />
-        <input
-          className="border p-2 rounded"
-          name="lng"
-          placeholder="Longitude"
-          value={formData.lng}
-          onChange={onChangeHandler}
-        />
-
-        {/* Address and Select should be full width or fit the grid */}
-        <input
-          className="border p-2 rounded"
-          name="address"
-          placeholder="Full Address"
-          value={formData.address}
-          onChange={onChangeHandler}
-        />
-
-        <select
-          className="border p-2 rounded"
-          name="nonveg"
-          value={formData.nonveg}
-          onChange={onChangeHandler}
-        >
-          <option value="true">Non-Veg Available</option>
-          <option value="false">Veg Only</option>
-        </select>
-        {/* <div className="flex flex-col md:col-span-2">
-          <label className="text-sm font-medium">
-            Upload Images (Multiple)
-          </label>
-          <input
-            type="file"
-            multiple
-            onChange={onImageChange}
-            className="border p-2"
-            accept="image/*"
-          />
-          <div className="flex gap-2 mt-2">
-            {images.map((img, index) => (
-              <p key={index} className="text-xs text-blue-500">
-                {img.name}
-              </p>
-            ))}
+        <form className="space-y-6" onSubmit={onSubmitHandler}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="space-y-1">
+              <label className="text-sm font-semibold text-slate-700">
+                Mess Name
+              </label>
+              <input
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-600 outline-none transition-all"
+                name="name"
+                placeholder="Annapurna Mess"
+                value={formData.name}
+                onChange={onChangeHandler}
+                required
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-sm font-semibold text-slate-700">
+                City
+              </label>
+              <input
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-600 outline-none transition-all"
+                name="city"
+                placeholder="Pune"
+                value={formData.city}
+                onChange={onChangeHandler}
+                required
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-sm font-semibold text-slate-700">
+                Nearby College
+              </label>
+              <input
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-600 outline-none transition-all"
+                name="college"
+                placeholder="COEP (Optional)"
+                value={formData.college}
+                onChange={onChangeHandler}
+              />
+            </div>
           </div>
-        </div> */}
-        <input
-          onChange={onChangeHandler}
-          className="px-2 py-1 border outline-none rounded-md"
-          type="text"
-          value={formData.img1}
-          name="img1"
-          required
-          placeholder="Image1 Url"
-        />
-        <input
-          onChange={onChangeHandler}
-          className="px-2 py-1 border outline-none rounded-md"
-          type="text"
-          value={formData.img2}
-          name="img2"
-          placeholder="Image2 Url (Optional)"
-        />
-        <input
-          onChange={onChangeHandler}
-          className="px-2 py-1 border outline-none rounded-md"
-          type="text"
-          value={formData.img3}
-          name="img3"
-          placeholder="Image3 Url (Optional)"
-        />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="space-y-1">
+              <label className="text-sm font-semibold text-slate-700">
+                Phone
+              </label>
+              <input
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-600 outline-none transition-all"
+                name="phone"
+                placeholder="+91 ..."
+                value={formData.phone}
+                onChange={onChangeHandler}
+                required
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-sm font-semibold text-slate-700">
+                Monthly/Daily Price
+              </label>
+              <input
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-600 outline-none transition-all"
+                name="price"
+                placeholder="₹ 3000"
+                value={formData.price}
+                onChange={onChangeHandler}
+                required
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-sm font-semibold text-slate-700">
+                Dietary Option
+              </label>
+              <select
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-600 outline-none bg-white transition-all"
+                name="nonveg"
+                value={formData.nonveg}
+                onChange={onChangeHandler}
+              >
+                <option value="true">Veg & Non-Veg Available</option>
+                <option value="false">Pure Vegetarian Only</option>
+              </select>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 p-4 rounded-2xl">
+            <div className="space-y-1">
+              <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                Latitude
+              </label>
+              <input
+                className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:border-blue-600 outline-none"
+                name="lat"
+                placeholder="18.5204"
+                value={formData.lat}
+                onChange={onChangeHandler}
+                required
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                Longitude
+              </label>
+              <input
+                className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:border-blue-600 outline-none"
+                name="lng"
+                placeholder="73.8567"
+                value={formData.lng}
+                onChange={onChangeHandler}
+                required
+              />
+            </div>
+          </div>
 
-        <button
-          disabled={loading}
-          type="submit"
-          className="md:col-span-2 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition"
-        >
-          {loading ? "Uploading..." : "Add Hostel"}
-        </button>
-      </form>
+          <div className="space-y-1">
+            <label className="text-sm font-semibold text-slate-700">
+              Full Physical Address
+            </label>
+            <textarea
+              rows="2"
+              className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-600 outline-none transition-all"
+              name="address"
+              placeholder="Building name, Street, Landmark..."
+              value={formData.address}
+              onChange={onChangeHandler}
+              required
+            />
+          </div>
+          <div className="space-y-3">
+            <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest">
+              Gallery (Cloudinary URLs)
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <input
+                className="w-full px-4 py-2 rounded-lg border border-slate-200 text-sm focus:border-blue-600 outline-none"
+                name="img1"
+                placeholder="Main Image URL"
+                value={formData.img1}
+                onChange={onChangeHandler}
+                required
+              />
+              <input
+                className="w-full px-4 py-2 rounded-lg border border-slate-200 text-sm focus:border-blue-600 outline-none"
+                name="img2"
+                placeholder="Image 2 (Optional)"
+                value={formData.img2}
+                onChange={onChangeHandler}
+              />
+              <input
+                className="w-full px-4 py-2 rounded-lg border border-slate-200 text-sm focus:border-blue-600 outline-none"
+                name="img3"
+                placeholder="Image 3 (Optional)"
+                value={formData.img3}
+                onChange={onChangeHandler}
+              />
+            </div>
+          </div>
+          <button
+            disabled={loading}
+            className={`w-full py-4 px-4 rounded-2xl font-black text-lg text-white shadow-xl transition-all active:scale-[0.98] ${
+              loading
+                ? "bg-slate-400 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700 hover:shadow-blue-100"
+            }`}
+            type="submit"
+          >
+            {loading ? "Registering Mess..." : "Add Mess Unit"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

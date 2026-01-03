@@ -1,6 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import { useOutletContext, useParams, Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import {
+  FaMapMarkerAlt,
+  FaMars,
+  FaVenus,
+  FaHome,
+  FaChevronRight,
+} from "react-icons/fa";
 import axios from "axios";
 import AppContext from "@/contexts/AppContext";
 
@@ -23,7 +30,7 @@ const PgNearCollege = () => {
           setPgs(response.data.pgs || []);
         }
       } catch (error) {
-        toast.error("Error loading hostels");
+        toast.error("Error loading PG data");
         console.log(error);
       } finally {
         setLocalLoading(false);
@@ -48,81 +55,144 @@ const PgNearCollege = () => {
   });
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-bold mb-6">PGs/Flats near {college?.name}</h2>
-      <div className="flex gap-18 my-2 items-center justify-around">
-        <div className="flex bg-gray-100 p-1 rounded-lg">
-          {["All", "Boy's", "Girl's"].map((type) => (
-            <button
-              key={type}
-              onClick={() => setFilterGender(type)}
-              className={`md:px-4 md:py-2 px-2 py-1 text-sm rounded-md font-medium transition-all ${
-                filterGender === type
-                  ? "bg-white shadow text-blue-600"
-                  : "text-gray-600 hover:text-blue-500"
-              }`}
-            >
-              {type}
-            </button>
-          ))}
+    <div className="py-8">
+      {/* Header & Advanced Filters */}
+      <div className="flex flex-col gap-6 mb-8">
+        <div>
+          <h2 className="text-2xl font-black text-slate-900 tracking-tight">
+            PGs & Flats near{" "}
+            <span className="text-blue-600">{college?.name}</span>
+          </h2>
+          <p className="text-slate-500 text-sm font-medium">
+            Independent and shared living spaces for students.
+          </p>
         </div>
 
-        <div className="flex bg-gray-100 p-1 rounded-lg">
-          {["All", "Veg Only", "Non-Veg"].map((type) => (
-            <button
-              key={type}
-              onClick={() => setFilter(type)}
-              className={`md:px-4 md:py-2 px-2 py-1 rounded-md text-sm font-medium transition-all ${
-                filter === type
-                  ? "bg-white shadow text-blue-600"
-                  : "text-gray-600 hover:text-blue-500"
-              }`}
-            >
-              {type}
-            </button>
-          ))}
+        <div className="flex flex-wrap gap-4 items-center justify-start md:justify-start">
+          {/* Segmented Control: Gender */}
+          <div className="flex bg-slate-100 p-1 rounded-2xl border border-slate-200 shadow-sm">
+            {["All", "Boy's", "Girl's"].map((type) => (
+              <button
+                key={type}
+                onClick={() => setFilterGender(type)}
+                className={`px-4 py-2 text-[11px] font-black uppercase tracking-widest rounded-xl transition-all ${
+                  filterGender === type
+                    ? "bg-white shadow text-blue-600 scale-100"
+                    : "text-slate-500 hover:text-slate-800 scale-95"
+                }`}
+              >
+                {type}
+              </button>
+            ))}
+          </div>
+
+          {/* Segmented Control: Food */}
+          <div className="flex bg-slate-100 p-1 rounded-2xl border border-slate-200 shadow-sm">
+            {["All", "Veg Only", "Non-Veg"].map((type) => (
+              <button
+                key={type}
+                onClick={() => setFilter(type)}
+                className={`px-4 py-2 text-[11px] font-black uppercase tracking-widest rounded-xl transition-all ${
+                  filter === type
+                    ? "bg-white shadow text-blue-600 scale-100"
+                    : "text-slate-500 hover:text-slate-800 scale-95"
+                }`}
+              >
+                {type}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
+
       {localLoading ? (
-        <div className="flex gap-4">
-          {[1, 2, 3, 4].map((n) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {[1, 2].map((n) => (
             <div
               key={n}
-              className="w-50 h-60 bg-gray-100 animate-pulse rounded-xl"
+              className="h-44 bg-slate-100 animate-pulse rounded-4xl"
             />
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {filteredPgs.length > 0 ? (
             filteredPgs.map((item) => (
               <Link
-                to={`/hostel/${item._id}`}
+                to={`/hostel/${item._id}`} // Redirect to details
                 key={item._id}
-                className="group block bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg overflow-hidden"
+                className="group flex flex-col sm:flex-row bg-white rounded-4xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500 overflow-hidden"
               >
-                <div className="relative">
+                {/* Visual Section */}
+                <div className="sm:w-48 h-48 sm:h-full relative overflow-hidden shrink-0">
                   <img
-                    className="w-full h-48 object-cover"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     src={item.image?.[0] || "https://via.placeholder.com/400"}
                     alt={item.name}
                     loading="lazy"
                   />
-                  <div className="absolute bottom-2 right-2 bg-white px-2 py-1 rounded-lg">
-                    <p className="text-blue-600 font-bold">₹{item.price}</p>
+                  <div className="absolute top-3 left-3">
+                    <span
+                      className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-wider shadow-sm backdrop-blur-md ${
+                        item.nonveg
+                          ? "bg-orange-500/90 text-white"
+                          : "bg-green-600/90 text-white"
+                      }`}
+                    >
+                      {item.nonveg ? "Non-Veg" : "Veg Only"}
+                    </span>
                   </div>
                 </div>
-                <div className="p-4">
-                  <h3 className="font-bold text-lg">{item.name}</h3>
-                  <p className="text-sm text-gray-500">
-                    📍 {item.city?.name || "Nearby"}
-                  </p>
+
+                {/* Info Section */}
+                <div className="p-6 flex flex-col justify-between flex-1">
+                  <div>
+                    <div className="flex justify-between items-start mb-1">
+                      <h3 className="font-extrabold text-lg text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">
+                        {item.name}
+                      </h3>
+                      <div className="flex gap-1">
+                        {item.gender === "male" ? (
+                          <FaMars className="text-blue-500" size={14} />
+                        ) : (
+                          <FaVenus className="text-pink-500" size={14} />
+                        )}
+                      </div>
+                    </div>
+                    <p className="text-slate-400 text-xs flex items-center gap-1 font-bold">
+                      <FaMapMarkerAlt size={10} className="text-slate-300" />
+                      {item.city?.name || "Walking Distance"}
+                    </p>
+                  </div>
+
+                  <div className="flex items-end justify-between mt-4">
+                    <div>
+                      <p className="text-[9px] text-slate-400 uppercase font-black tracking-widest leading-none">
+                        Starting from
+                      </p>
+                      <p className="text-xl font-black text-blue-600">
+                        ₹{item.price}
+                        <span className="text-[10px] text-slate-400 font-bold tracking-normal italic ml-1">
+                          /mo
+                        </span>
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2 text-blue-600 font-black text-[10px] uppercase tracking-wider group-hover:gap-3 transition-all">
+                      Details <FaChevronRight size={10} />
+                    </div>
+                  </div>
                 </div>
               </Link>
             ))
           ) : (
-            <div className="col-span-2 text-center py-10 text-gray-400">
-              No PGs linked to this college yet.
+            <div className="col-span-full py-20 text-center bg-slate-50 rounded-[2.5rem] border-2 border-dashed border-slate-200">
+              <FaHome className="mx-auto text-slate-200 mb-4" size={40} />
+              <p className="text-slate-500 font-black text-lg">
+                No PGs found matching these filters.
+              </p>
+              <p className="text-slate-400 text-sm mt-1">
+                Try adjusting your gender or food preferences.
+              </p>
             </div>
           )}
         </div>

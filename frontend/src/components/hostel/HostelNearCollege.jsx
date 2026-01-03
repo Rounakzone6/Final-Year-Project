@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useOutletContext, useParams, Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { FaUtensils, FaMapMarkerAlt, FaMars, FaVenus } from "react-icons/fa";
 import axios from "axios";
 import AppContext from "@/contexts/AppContext";
 
@@ -48,94 +49,118 @@ const HostelNearCollege = () => {
   });
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-bold">Hostels near {college?.name}</h2>
-      <div className="flex gap-18 my-2 items-center justify-around">
-        <div className="flex bg-gray-100 p-1 rounded-lg">
-          {["All", "Boy's", "Girl's"].map((type) => (
-            <button
-              key={type}
-              onClick={() => setFilterGender(type)}
-              className={`md:px-4 md:py-2 px-2 py-1 text-sm rounded-md font-medium transition-all ${
-                filterGender === type
-                  ? "bg-white shadow text-blue-600"
-                  : "text-gray-600 hover:text-blue-500"
-              }`}
-            >
-              {type}
-            </button>
-          ))}
+    <div className="py-8">
+      {/* Header & Filter Section */}
+      <div className="flex flex-col gap-6 mb-8">
+        <div>
+          <h2 className="text-2xl font-black text-slate-900 tracking-tight">
+            Hostels near <span className="text-blue-600">{college?.name}</span>
+          </h2>
+          <p className="text-slate-500 text-sm font-medium">Showing verified student accommodations within walking distance.</p>
         </div>
 
-        <div className="flex bg-gray-100 p-1 rounded-lg">
-          {["All", "Veg Only", "Non-Veg"].map((type) => (
-            <button
-              key={type}
-              onClick={() => setFilter(type)}
-              className={`md:px-4 md:py-2 px-2 py-1 rounded-md text-sm font-medium transition-all ${
-                filter === type
-                  ? "bg-white shadow text-blue-600"
-                  : "text-gray-600 hover:text-blue-500"
-              }`}
-            >
-              {type}
-            </button>
-          ))}
+        <div className="flex flex-wrap gap-4 items-center">
+          {/* Gender Filter Segment */}
+          <div className="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
+            {["All", "Boy's", "Girl's"].map((type) => (
+              <button
+                key={type}
+                onClick={() => setFilterGender(type)}
+                className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-xl transition-all ${
+                  filterGender === type
+                    ? "bg-white shadow-sm text-blue-600"
+                    : "text-slate-500 hover:text-slate-800"
+                }`}
+              >
+                {type}
+              </button>
+            ))}
+          </div>
+
+          {/* Food Filter Segment */}
+          <div className="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
+            {["All", "Veg Only", "Non-Veg"].map((type) => (
+              <button
+                key={type}
+                onClick={() => setFilter(type)}
+                className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-xl transition-all ${
+                  filter === type
+                    ? "bg-white shadow-sm text-blue-600"
+                    : "text-slate-500 hover:text-slate-800"
+                }`}
+              >
+                {type}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
+
       {localLoading ? (
-        <div className="flex gap-4">
-          {[1, 2, 3, 4].map((n) => (
-            <div
-              key={n}
-              className="w-50 h-60 bg-gray-100 animate-pulse rounded-xl"
-            />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {[1, 2].map((n) => (
+            <div key={n} className="h-64 bg-slate-100 animate-pulse rounded-4xl" />
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {filteredHostels.length > 0 ? (
             filteredHostels.map((item) => (
               <Link
                 to={`/hostel/${item._id}`}
                 key={item._id}
-                className="group block bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg overflow-hidden"
+                className="group flex flex-col sm:flex-row bg-white rounded-4xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500 overflow-hidden"
               >
-                <div className="relative">
+                {/* Image Section */}
+                <div className="sm:w-48 h-48 sm:h-full relative overflow-hidden shrink-0">
                   <img
-                    className="w-full h-48 object-cover"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     src={item.image?.[0] || "https://via.placeholder.com/400"}
                     alt={item.name}
                     loading="lazy"
                   />
-                  <div className="absolute top-1 left-1 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg shadow-sm">
-                    <p
-                      className={`text-[10px] font-bold ${
-                        item.nonveg === true ? "text-red-500" : "text-blue-600"
-                      } uppercase tracking-wider`}
-                    >
-                      {item.nonveg === true ? "NON-VEG" : "PURE VEG"}
-                    </p>
-                  </div>
-                  <div className="absolute bottom-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg shadow-sm">
-                    <p
-                      className={`text-[12px] font-bold text-blue-600 uppercase tracking-wider`}
-                    >
-                      ₹{item.price}
-                    </p>
+                  <div className="absolute top-3 left-3">
+                    <span className={`px-2 py-1 rounded-lg text-[9px] font-black uppercase tracking-tighter shadow-sm backdrop-blur-md ${
+                      item.nonveg ? "bg-orange-500/90 text-white" : "bg-green-500/90 text-white"
+                    }`}>
+                      {item.nonveg ? "Non-Veg" : "Veg Only"}
+                    </span>
                   </div>
                 </div>
-                <div className="p-4">
-                  <h3 className="font-bold text-lg">{item.name}</h3>
-                  <p className="text-sm text-gray-500">
-                    📍 {item.city?.name || "Nearby"}
-                  </p>
+
+                {/* Info Section */}
+                <div className="p-6 flex flex-col justify-between flex-1">
+                  <div>
+                    <div className="flex justify-between items-start mb-1">
+                       <h3 className="font-extrabold text-lg text-slate-900 group-hover:text-blue-600 transition-colors">
+                        {item.name}
+                      </h3>
+                      <div className="flex items-center gap-1 text-slate-900 text-xs font-black">
+                         {item.gender === "male" ? <FaMars className="text-blue-500" /> : <FaVenus className="text-pink-500" />}
+                      </div>
+                    </div>
+                    <p className="text-slate-400 text-xs flex items-center gap-1 font-bold">
+                      <FaMapMarkerAlt size={10} className="text-slate-300" />
+                      {item.city?.name || "Campus Perimeter"}
+                    </p>
+                  </div>
+
+                  <div className="flex items-end justify-between mt-4">
+                    <div>
+                      <p className="text-[9px] text-slate-400 uppercase font-black tracking-widest leading-none">Monthly</p>
+                      <p className="text-xl font-black text-blue-600">₹{item.price}</p>
+                    </div>
+                    <div className="text-[10px] font-bold text-blue-600 bg-blue-50 px-3 py-1.5 rounded-full group-hover:bg-blue-600 group-hover:text-white transition-all">
+                      View Space
+                    </div>
+                  </div>
                 </div>
               </Link>
             ))
           ) : (
-            <div className="col-span-2 text-center py-10 text-gray-400">
-              No hostels linked to this college yet.
+            <div className="col-span-full py-16 text-center bg-slate-50 rounded-[2.5rem] border-2 border-dashed border-slate-200">
+              <FaUtensils className="mx-auto text-slate-200 mb-3" size={32} />
+              <p className="text-slate-500 font-bold">No hostels matching these filters near this college.</p>
             </div>
           )}
         </div>
