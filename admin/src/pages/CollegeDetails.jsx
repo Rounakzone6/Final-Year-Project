@@ -66,9 +66,10 @@ const CollegeDetails = () => {
 
       <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-8">
         <img
+          className="w-full h-64 object-cover rounded-xl shadow-lg"
           src={college.image}
           alt={college.name}
-          className="w-full h-64 object-cover rounded-xl shadow-lg"
+          loading="lazy"
         />
         <div className="space-y-4">
           <p className="text-gray-700">

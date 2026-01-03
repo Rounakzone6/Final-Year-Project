@@ -49,6 +49,7 @@ const College = () => {
                           className="w-full h-40 object-cover group-hover:scale-110 transition-transform duration-500"
                           src={college.image}
                           alt={college.name}
+                          loading="lazy"
                         />
                         <div className="absolute capitalize top-2 right-2 bg-white/90 px-2 py-1 rounded text-xs font-semibold text-blue-600">
                           {college.city?.name}

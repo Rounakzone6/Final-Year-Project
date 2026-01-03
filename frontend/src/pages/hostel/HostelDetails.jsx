@@ -74,6 +74,7 @@ const HostelDetails = () => {
               className="w-full h-112.5 object-cover hover:scale-105 transition-transform duration-700"
               src={mainImage}
               alt={hostel.name}
+              loading="lazy"
             />
           </div>
           <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
@@ -82,6 +83,7 @@ const HostelDetails = () => {
                 key={index}
                 onClick={() => setMainImage(item)}
                 src={item}
+                loading="lazy"
                 className={`w-24 h-24 min-w-24 object-cover cursor-pointer rounded-xl border-4 transition-all ${
                   mainImage === item
                     ? "border-blue-600 scale-95"

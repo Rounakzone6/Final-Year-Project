@@ -32,6 +32,7 @@ const Navbar = () => {
           <img
             className="h-10 md:h-12 w-auto object-contain"
             src={logo}
+            loading="lazy"
             alt="Nestify Logo"
           />
         </Link>

@@ -70,6 +70,7 @@ const City = () => {
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                         src={city.image}
                         alt={city.name}
+                        loading="lazy"
                       />
                       <div className="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent opacity-60 group-hover:opacity-90 transition-opacity" />
                       <div className="absolute bottom-4 left-4 text-left">

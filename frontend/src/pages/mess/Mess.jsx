@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
-import { Link, Outlet,  } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import AppContext from "@/contexts/AppContext";
 import CityListInMessPage from "@/components/city/CityListInMessPage";
 
 const Mess = () => {
-  const { messList,location, loading, navigate } = useContext(AppContext);
+  const { messList, location, loading, navigate } = useContext(AppContext);
   const [filter, setFilter] = useState("All");
   const [filterGender, setFilterGender] = useState("All");
 
@@ -49,38 +49,38 @@ const Mess = () => {
             </div>
 
             <div className="flex gap-18 items-center">
-            <div className="flex bg-gray-100 p-1 rounded-lg">
-              {["All", "Boy's", "Girl's"].map((type) => (
-                <button
-                  key={type}
-                  onClick={() => setFilterGender(type)}
-                  className={`md:px-4 md:py-2 px-2 py-1 rounded-md text-sm font-medium transition-all ${
-                    filterGender === type
-                      ? "bg-white shadow text-blue-600"
-                      : "text-gray-600 hover:text-blue-500"
-                  }`}
-                >
-                  {type}
-                </button>
-              ))}
-            </div>
+              <div className="flex bg-gray-100 p-1 rounded-lg">
+                {["All", "Boy's", "Girl's"].map((type) => (
+                  <button
+                    key={type}
+                    onClick={() => setFilterGender(type)}
+                    className={`md:px-4 md:py-2 px-2 py-1 rounded-md text-sm font-medium transition-all ${
+                      filterGender === type
+                        ? "bg-white shadow text-blue-600"
+                        : "text-gray-600 hover:text-blue-500"
+                    }`}
+                  >
+                    {type}
+                  </button>
+                ))}
+              </div>
 
-            <div className="flex bg-gray-100 p-1 rounded-lg">
-              {["All", "Veg Only", "Non-Veg"].map((type) => (
-                <button
-                  key={type}
-                  onClick={() => setFilter(type)}
-                  className={`md:px-4 md:py-2 px-2 py-1 rounded-md text-sm font-medium transition-all ${
-                    filter === type
-                      ? "bg-white shadow text-blue-600"
-                      : "text-gray-600 hover:text-blue-500"
-                  }`}
-                >
-                  {type}
-                </button>
-              ))}
+              <div className="flex bg-gray-100 p-1 rounded-lg">
+                {["All", "Veg Only", "Non-Veg"].map((type) => (
+                  <button
+                    key={type}
+                    onClick={() => setFilter(type)}
+                    className={`md:px-4 md:py-2 px-2 py-1 rounded-md text-sm font-medium transition-all ${
+                      filter === type
+                        ? "bg-white shadow text-blue-600"
+                        : "text-gray-600 hover:text-blue-500"
+                    }`}
+                  >
+                    {type}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredmess.map((mess) => (
@@ -94,6 +94,7 @@ const Mess = () => {
                     className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
                     src={mess.image[0]}
                     alt={mess.name}
+                    loading="lazy"
                   />
                   <div className="absolute top-3 left-3">
                     <span

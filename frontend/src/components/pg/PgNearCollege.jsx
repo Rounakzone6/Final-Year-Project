@@ -106,6 +106,7 @@ const PgNearCollege = () => {
                     className="w-full h-48 object-cover"
                     src={item.image?.[0] || "https://via.placeholder.com/400"}
                     alt={item.name}
+                    loading="lazy"
                   />
                   <div className="absolute bottom-2 right-2 bg-white px-2 py-1 rounded-lg">
                     <p className="text-blue-600 font-bold">₹{item.price}</p>

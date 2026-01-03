@@ -46,6 +46,7 @@ const CityListInPgPage = () => {
                           }`}
                           src={city.image}
                           alt={city.name}
+                          loading="lazy"
                         />
                         {isActive && (
                           <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-blue-600 rounded-full" />

@@ -47,6 +47,7 @@ const MessList = () => {
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 src={mess.image?.[0]}
                 alt={mess.name}
+                loading="lazy"
               />
               <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg shadow-sm">
                 <p className="text-[10px] font-bold text-blue-600 uppercase tracking-wider">

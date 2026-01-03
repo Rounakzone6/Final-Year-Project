@@ -19,6 +19,7 @@ const Navbar = () => {
         <img
           onClick={() => navigate("/")}
           src={logo}
+          loading="lazy"
           alt="Nestify"
           className="h-12"
         />

@@ -95,6 +95,7 @@ const Hostel = () => {
                     className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
                     src={hostel.image[0]}
                     alt={hostel.name}
+                    loading="lazy"
                   />
                   <div className="absolute top-3 left-3">
                     <span

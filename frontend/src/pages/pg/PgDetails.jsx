@@ -44,6 +44,7 @@ const PgDetails = () => {
                 onClick={() => setMainImage(item)}
                 src={item}
                 key={index}
+                loading="lazy"
                 className={`w-20 h-20 object-cover cursor-pointer rounded-lg border-2 ${
                   mainImage === item ? "border-blue-600" : "border-transparent"
                 }`}
@@ -56,6 +57,7 @@ const PgDetails = () => {
               className="w-full h-100 object-cover rounded-2xl shadow-lg"
               src={mainImage}
               alt={pg.name}
+              loading="lazy"
             />
           </div>
         </div>

@@ -70,9 +70,10 @@ const City = () => {
             >
               <p className="font-medium text-gray-400">#{index + 1}</p>
               <img
+                className="w-12 h-12 rounded object-cover"
                 src={city.image}
                 alt={city.name}
-                className="w-12 h-12 rounded object-cover"
+                loading="lazy"
               />
               <p className="text-xl capitalize">{city.name}</p>
               <p className="text-gray-500 capitalize">{city.state?.name}</p>

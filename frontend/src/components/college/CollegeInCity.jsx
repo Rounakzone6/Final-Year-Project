@@ -58,6 +58,7 @@ const CollegeInCity = () => {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     src={college.image}
                     alt={college.name}
+                    loading="lazy"
                   />
                 </div>
                 <div className="p-2 relative flex flex-col grow">

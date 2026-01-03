@@ -59,6 +59,7 @@ const MessNearCollege = () => {
                     className="w-full h-48 object-cover"
                     src={item.image?.[0] || "https://via.placeholder.com/400"}
                     alt={item.name}
+                    loading="lazy"
                   />
                   <div className="absolute top-1 left-1 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg shadow-sm">
                     <p
