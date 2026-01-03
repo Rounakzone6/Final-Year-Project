@@ -40,6 +40,10 @@ app.use("/pg", pgRoute);
 app.use("/mess", messRoute);
 app.use("/contribute", contributeRoute);
 
+app.get("/", (req, res) => {
+  res.send("Hello world");
+});
+
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
