@@ -1,3 +1,5 @@
+import fs from "fs";
+import axios from "axios";
 import { v2 as cloudinary } from "cloudinary";
 import cityModel from "../models/cityModel.js";
 import collegeModel from "../models/collegeModel.js";
@@ -5,7 +7,9 @@ import pgModel from "../models/pgModel.js";
 
 const pgList = async (req, res) => {
   try {
-    const pgs = await pgModel.find({}).populate("city college", "name");
+    const pgs = await pgModel
+      .find({ isVerified: true })
+      .populate("city college", "name");
     if (!pgs) return res.json({ success: false, message: "pgs not found" });
     res.json({ success: true, pgs });
   } catch (error) {
@@ -24,7 +28,8 @@ const pgDetails = async (req, res) => {
   }
 };
 
-const addpg = async (req, res) => {
+// Contribution
+const pgAdd = async (req, res) => {
   try {
     const {
       name,
@@ -37,9 +42,20 @@ const addpg = async (req, res) => {
       lat,
       lng,
       address,
+      recaptchaToken,
     } = req.body;
 
-    const imageFiles = req.files.image;
+    const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`;
+    const recaptchaRes = await axios.post(verifyUrl);
+
+    if (!recaptchaRes.data.success) {
+      return res.json({
+        success: false,
+        message: "reCAPTCHA verification failed.",
+      });
+    }
+
+    const imageFiles = req.files;
     if (!imageFiles || imageFiles.length === 0) {
       return res.json({
         success: false,
@@ -62,7 +78,102 @@ const addpg = async (req, res) => {
         const result = await cloudinary.uploader.upload(file.path, {
           resource_type: "image",
         });
-        return result.secure_url;
+        return result;
+      })
+    );
+
+    imageFiles.forEach((file) => {
+      if (fs.existsSync(file.path)) {
+        fs.unlinkSync(file.path);
+      }
+    });
+
+    const newpg = new pgModel({
+      name,
+      gender,
+      city: cityDoc._id,
+      college: collegeDoc ? collegeDoc._id : null,
+      image: imageUrls,
+      nonveg,
+      phone,
+      price,
+      locations: {
+        type: "Point",
+        coordinates: [parseFloat(lng), parseFloat(lat)],
+        address: address,
+      },
+    });
+
+    const savedPg = await newpg.save();
+    cityDoc.pgs.push(newpg._id);
+    await cityDoc.save();
+
+    if (collegeDoc) {
+      collegeDoc.pgs.push(newpg._id);
+      await collegeDoc.save();
+    }
+
+    await contributeModel.findOneAndUpdate(
+      {}, 
+      { $push: { pgs: savedPg._id } },
+      { upsert: true, new: true }
+    );
+
+    res.json({
+      success: true,
+      message:
+        "Your contribution has been received and is under review.\nThank you!",
+    });
+  } catch (error) {
+    if (req.files) {
+      req.files.forEach((file) => {
+        if (fs.existsSync(file.path)) fs.unlinkSync(file.path);
+      });
+    }
+    console.error(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+const addpg = async (req, res) => {
+  try {
+    const {
+      name,
+      gender,
+      city,
+      college,
+      nonveg,
+      phone,
+      price,
+      lat,
+      lng,
+      address,
+    } = req.body;
+
+    const imageFiles = req.files;
+    if (!imageFiles || imageFiles.length === 0) {
+      return res.json({
+        success: false,
+        message: "Please upload at least one image",
+      });
+    }
+
+    const cityDoc = await cityModel.findOne({
+      name: { $regex: new RegExp(`^${city}$`, "i") },
+    });
+    if (!cityDoc)
+      return res.json({ success: false, message: "City not found" });
+
+    const collegeDoc = await collegeModel.findOne({
+      name: { $regex: new RegExp(`^${college}$`, "i") },
+    });
+
+    const imageUrls = await Promise.all(
+      imageFiles.map(async (file) => {
+        const result = await cloudinary.uploader.upload(file.path, {
+          resource_type: "image",
+        });
+        return result;
       })
     );
 
@@ -182,4 +293,4 @@ const removepg = async (req, res) => {
   }
 };
 
-export { pgList, addpg, removepg, editpg, pgDetails };
+export { pgList, addpg, removepg, editpg, pgDetails, pgAdd };

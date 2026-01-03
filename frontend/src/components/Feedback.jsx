@@ -6,8 +6,8 @@ const Feedback = () => {
       <p className="text-3xl text-center font-bold">
         What users thinks about us
       </p>
-      <div className="flex mt-6 gap-4 flex-wrap">
-        <div className="w-100 bg-gray-100 p-4 rounded-2xl">
+      <div className="flex mt-6 gap-2 flex-wrap">
+        <div className="w-80 bg-gray-100 p-4 rounded-2xl">
           <p className="flex gap-1 justify-center items-center">
             <FaUser /> Sweta Yadav
           </p>
@@ -17,7 +17,7 @@ const Feedback = () => {
             PG discovery platform ever! #Nestify #CollegeLife
           </p>
         </div>
-        <div className="w-100 bg-gray-100 p-4 rounded-2xl">
+        <div className="w-80 bg-gray-100 p-4 rounded-2xl">
           <p className="flex gap-1 justify-center items-center">
             <FaUser /> Rounak Gupta
           </p>
@@ -27,7 +27,7 @@ const Feedback = () => {
             Hostel discovery platform ever! #Nestify #CollegeLife
           </p>
         </div>
-        <div className="w-100 bg-gray-100 p-4 rounded-2xl">
+        <div className="w-80 bg-gray-100 p-4 rounded-2xl">
           <p className="flex gap-1 justify-center items-center">
             <FaUser /> Samriddhi Verma
           </p>

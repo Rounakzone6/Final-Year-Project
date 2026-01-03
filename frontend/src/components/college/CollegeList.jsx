@@ -61,7 +61,7 @@ const CollegeList = () => {
                     {college.name}
                   </h3>
 
-                  <div className="space-y-2 mb-6">
+                  <div className="space-y-2 mb-2">
                     <p className="text-sm text-gray-500 flex items-center gap-2">
                       <FaMapMarkerAlt className="text-red-400 shrink-0" />
                       <span className="truncate capitalize">
@@ -70,7 +70,7 @@ const CollegeList = () => {
                     </p>
                     <p className="text-sm text-gray-500 flex items-center gap-2">
                       <FaPhoneAlt className="text-green-400 shrink-0 size-3" />
-                      <span>{college.contact}</span>
+                      <span>{college.phone}</span>
                     </p>
                   </div>
 

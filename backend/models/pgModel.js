@@ -10,6 +10,7 @@ const pgSchema = new mongoose.Schema(
     nonveg: { type: Boolean, default: true },
     phone: { type: Number, required: true },
     price: { type: Number, required: true },
+    isVerified: { type: Boolean, default: false },
     locations: {
       type: {
         type: String,
@@ -29,7 +30,6 @@ const pgSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const pgModel =
-  mongoose.models.room || mongoose.model("pg", pgSchema);
+const pgModel = mongoose.models.room || mongoose.model("pg", pgSchema);
 
 export default pgModel;

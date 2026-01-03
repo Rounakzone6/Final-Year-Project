@@ -92,7 +92,7 @@ const College = () => {
                   CONTACT:
                 </span>
                 <FaPhoneAlt className="text-blue-600" />
-                {college.contact}
+                {college.phone}
               </p>
 
               <div className="truncate pr-4">

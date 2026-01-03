@@ -53,6 +53,15 @@ const PgList = () => {
                   {pg.gender === "male" ? "♂ Boys" : "♀ Girls"}
                 </p>
               </div>
+              <div className="absolute bottom-1 right-1 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg shadow-sm">
+                <p
+                  className={`text-[10px] font-bold ${
+                    pg.nonveg === true ? "text-red-500" : "text-blue-600"
+                  } uppercase tracking-wider`}
+                >
+                  {pg.nonveg === true ? "NON-VEG" : "PURE VEG"}
+                </p>
+              </div>
             </div>
 
             <div className="p-4">

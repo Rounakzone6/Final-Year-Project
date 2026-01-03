@@ -8,7 +8,7 @@ const AddCollege = () => {
   const [formData, setFormData] = useState({
     name: "",
     city: "",
-    contact: "",
+    phone: "",
     about: "",
     url: "",
     lat: "",
@@ -41,7 +41,7 @@ const AddCollege = () => {
         setFormData({
           name: "",
           city: "",
-          contact: "",
+          phone: "",
           about: "",
           url: "",
           lat: "",
@@ -83,8 +83,8 @@ const AddCollege = () => {
           className="px-2 py-1 border outline-none rounded-md"
           onChange={onChangeHandler}
           type="text"
-          value={formData.contact}
-          name="contact"
+          value={formData.phone}
+          name="phone"
           placeholder="Contact information"
         />
         <input

@@ -8,10 +8,10 @@ const App = () => {
   const { token } = useContext(AppContext);
 
   return (
-    <div>
+    <>
       <ToastContainer />
       {token === "" ? <AdminLogin /> : <Home />}
-    </div>
+    </>
   );
 };
 

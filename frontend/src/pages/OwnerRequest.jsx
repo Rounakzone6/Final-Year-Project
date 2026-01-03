@@ -9,25 +9,25 @@ const OwnerRequest = () => {
   console.log(location);
 
   const [name, setName] = useState("");
-  const [contact, setContact] = useState("");
+  const [phone, setPhone] = useState("");
   const { loading, setLoading, backendUrl } = useContext(AppContext);
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    if (!name || !contact) {
+    if (!name || !phone) {
       return toast.error("Missing Details");
     }
     try {
       setLoading(true);
       const res = await axios.post(`${backendUrl}/owner/request`, {
         name,
-        contact,
+        phone,
       });
 
       if (res.data.success) {
         toast.success("Request Sent");
         setName("");
-        setContact("");
+        setPhone("");
       } else {
         toast.error(res.data.message);
       }
@@ -54,10 +54,10 @@ const OwnerRequest = () => {
       />
       <input
         type="text"
-        name="contact"
-        placeholder="Contact Number"
-        value={contact}
-        onChange={(e) => setContact(e.target.value)}
+        name="phone"
+        placeholder="phone Number"
+        value={phone}
+        onChange={(e) => setPhone(e.target.value)}
         className="block w-full mb-3 p-2 border"
       />
       <button

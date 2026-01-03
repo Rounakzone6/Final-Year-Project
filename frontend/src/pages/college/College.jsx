@@ -62,7 +62,7 @@ const College = () => {
                           {college.city?.state?.name}
                         </h3>
                         <p className="text-sm text-gray-500 mt-1 flex items-center gap-1">
-                          📞 {college.contact}
+                          📞 {college.phone}
                         </p>
                         <button className="mt-4 w-full py-2 bg-blue-50 text-blue-600 rounded-lg font-medium group-hover:bg-blue-600 group-hover:text-white transition-colors">
                           View Details

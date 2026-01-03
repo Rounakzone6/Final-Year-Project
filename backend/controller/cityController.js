@@ -68,7 +68,10 @@ const removeCity = async (req, res) => {
 const collegeInCity = async (req, res) => {
   try {
     const { id } = req.params;
-    const city = await cityModel.findById(id).populate("colleges");
+    const city = await cityModel.findById(id).populate({
+      path: "colleges",
+      match: { isVerified: true },
+    });
     if (!city) {
       return res.json({ success: false, message: "City not found" });
     }
@@ -85,7 +88,10 @@ const collegeInCity = async (req, res) => {
 const hostelInCity = async (req, res) => {
   try {
     const { id } = req.params;
-    const city = await cityModel.findById(id).populate("hostels");
+    const city = await cityModel.findById(id).populate({
+      path: "hostels",
+      match: { isVerified: true },
+    });
     if (!city) {
       return res.json({ success: false, message: "City not found" });
     }
@@ -102,7 +108,10 @@ const hostelInCity = async (req, res) => {
 const pgInCity = async (req, res) => {
   try {
     const { id } = req.params;
-    const city = await cityModel.findById(id).populate("pgs");
+    const city = await cityModel.findById(id).populate({
+      path: "pgs",
+      match: { isVerified: true },
+    });
     if (!city) {
       return res.json({ success: false, message: "City not found" });
     }
@@ -119,7 +128,10 @@ const pgInCity = async (req, res) => {
 const messInCity = async (req, res) => {
   try {
     const { id } = req.params;
-    const city = await cityModel.findById(id).populate("mess");
+    const city = await cityModel.findById(id).populate({
+      path: "mess",
+      match: { isVerified: true },
+    });
     if (!city) {
       return res.json({ success: false, message: "City not found" });
     }

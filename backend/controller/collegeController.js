@@ -1,9 +1,13 @@
+import fs from "fs";
+import axios from "axios";
+import { v2 as cloudinary } from "cloudinary";
 import cityModel from "../models/cityModel.js";
 import collegeModel from "../models/collegeModel.js";
+import contributeModel from "../models/contributeModel.js";
 
 const collegeList = async (req, res) => {
   try {
-    const colleges = await collegeModel.find({}).populate({
+    const colleges = await collegeModel.find({ isVerified: true }).populate({
       path: "city",
       select: "name state",
       populate: {
@@ -38,7 +42,7 @@ const collegeDetails = async (req, res) => {
 
 const addCollege = async (req, res) => {
   try {
-    const { name, city, image, contact, url, about, lat, lng, address } =
+    const { name, city, image, phone, url, about, lat, lng, address } =
       req.body;
     const cityDoc = await cityModel.findOne({
       name: { $regex: new RegExp(`^${city}$`, "i") },
@@ -53,7 +57,7 @@ const addCollege = async (req, res) => {
     const newCollege = new collegeModel({
       name,
       city: cityId,
-      contact,
+      phone,
       url,
       about,
       image,
@@ -75,10 +79,95 @@ const addCollege = async (req, res) => {
   }
 };
 
+// Contribution
+const collegeAdd = async (req, res) => {
+  try {
+    const { name, city, phone, url, about, lat, lng, address, recaptchaToken } =
+      req.body;
+
+    const verifyUrl = "https://www.google.com/recaptcha/api/siteverify";
+
+    const params = new URLSearchParams();
+    params.append("secret", process.env.RECAPTCHA_SECRET_KEY);
+    params.append("response", recaptchaToken);
+
+    const recaptchaRes = await axios.post(verifyUrl, params);
+
+    if (!recaptchaRes.data.success) {
+      console.error("reCAPTCHA Error Codes:", recaptchaRes.data["error-codes"]);
+
+      return res.json({
+        success: false,
+        message: "reCAPTCHA verification failed. Please try again.",
+      });
+    }
+
+    const image = req.file;
+    if (!image) {
+      return res.json({
+        success: false,
+        message: "Please upload only one image",
+      });
+    }
+
+    const uploadResponse = await cloudinary.uploader.upload(image.path, {
+      resource_type: "image",
+      timeout: 60000,
+    });
+    fs.unlinkSync(image.path);
+
+    const cityDoc = await cityModel.findOne({
+      name: { $regex: new RegExp(`^${city}$`, "i") },
+    });
+
+    if (!cityDoc) {
+      return res.json({ success: false, message: `City '${city}' not found.` });
+    }
+
+    const newCollege = new collegeModel({
+      name,
+      city: cityDoc._id,
+      phone,
+      url,
+      about,
+      image: uploadResponse.secure_url,
+      locations: {
+        type: "Point",
+        coordinates: [parseFloat(lng), parseFloat(lat)],
+        address: address,
+      },
+      isVerified: false,
+    });
+
+    const savedCollege = await newCollege.save();
+
+    cityDoc.colleges.push(savedCollege._id);
+    await cityDoc.save();
+
+    await contributeModel.findOneAndUpdate(
+      {},
+      { $push: { colleges: savedCollege._id } },
+      { upsert: true, new: true }
+    );
+
+    res.json({
+      success: true,
+      message:
+        "Your contribution has been received and is under review.\nThank you!",
+    });
+  } catch (error) {
+    if (req.file && fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
+    }
+    console.error(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
 const editCollege = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, city, contact, url, about, lat, lng, address } = req.body;
+    const { name, city, phone, url, about, lat, lng, address } = req.body;
     const imageFile = req.file;
 
     const existingCollege = await collegeModel.findById(id);
@@ -95,7 +184,7 @@ const editCollege = async (req, res) => {
     const updateData = {
       name,
       city: cityDoc._id,
-      contact,
+      phone,
       url,
       about,
       location: {
@@ -200,4 +289,5 @@ export {
   hostelNearCollege,
   pgNearCollege,
   messNearCollege,
+  collegeAdd,
 };

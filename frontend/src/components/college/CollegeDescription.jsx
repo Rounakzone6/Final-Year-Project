@@ -22,7 +22,7 @@ const CollegeDescription = () => {
           <b>About:</b> {college.about}
         </p>
         <p className="text-gray-700">
-          <b>Contact:</b> {college.contact}
+          <b>Contact:</b> {college.phone}
         </p>
         <p className="text-gray-700">
           <b>Address:</b> {college.locations?.address}

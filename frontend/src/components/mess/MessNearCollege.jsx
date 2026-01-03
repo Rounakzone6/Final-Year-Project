@@ -60,8 +60,21 @@ const MessNearCollege = () => {
                     src={item.image?.[0] || "https://via.placeholder.com/400"}
                     alt={item.name}
                   />
-                  <div className="absolute bottom-2 right-2 bg-white px-2 py-1 rounded-lg">
-                    <p className="text-blue-600 font-bold">₹{item.price}</p>
+                  <div className="absolute top-1 left-1 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg shadow-sm">
+                    <p
+                      className={`text-[10px] font-bold ${
+                        item.nonveg === true ? "text-red-500" : "text-blue-600"
+                      } uppercase tracking-wider`}
+                    >
+                      {item.nonveg === true ? "NON-VEG" : "PURE VEG"}
+                    </p>
+                  </div>
+                  <div className="absolute bottom-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg shadow-sm">
+                    <p
+                      className={`text-[12px] font-bold text-blue-600 uppercase tracking-wider`}
+                    >
+                      ₹{item.price}
+                    </p>
                   </div>
                 </div>
                 <div className="p-4">

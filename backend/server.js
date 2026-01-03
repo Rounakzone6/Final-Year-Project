@@ -14,6 +14,7 @@ import hostelRoute from "./router/hostelRoute.js";
 import stateRoute from "./router/stateRoute.js";
 import pgRoute from "./router/pgRoute.js";
 import messRoute from "./router/messRoute.js";
+import contributeRoute from "./router/contributeRoute.js";
 
 const app = express();
 const port = process.env.PORT | 4000;
@@ -37,6 +38,7 @@ app.use("/review", reviewRoute);
 app.use("/hostel", hostelRoute);
 app.use("/pg", pgRoute);
 app.use("/mess", messRoute);
+app.use("/contribute", contributeRoute);
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);

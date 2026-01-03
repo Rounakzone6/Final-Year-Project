@@ -54,11 +54,18 @@ const MessInCity = () => {
                 key={mess._id}
                 className="w-64 h-80 snap-start group bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300"
               >
-                <img
-                  className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
-                  src={mess.image?.[0]}
-                  alt={mess.name}
-                />
+                <div className="relative h-48 overflow-hidden rounded-t-2xl">
+                  <img
+                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    src={mess.image?.[0]}
+                    alt={mess.name}
+                  />
+                  <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg shadow-sm">
+                    <p className="text-[10px] font-bold text-blue-600 uppercase tracking-wider">
+                      {mess.nonveg ? "Non Veg Available" : "Pure Veg"}
+                    </p>
+                  </div>
+                </div>
                 <div className="p-4">
                   <div className="flex justify-between items-start">
                     <h3 className="font-bold text-gray-800 text-lg truncate w-40">

@@ -9,7 +9,7 @@ const HostelInCity = () => {
   const [city, setCity] = useState("");
   const [hostel, setHostel] = useState([]);
   const [loading, setLoading] = useState(false);
-  const {  backendUrl } = useContext(AppContext);
+  const { backendUrl } = useContext(AppContext);
 
   useEffect(() => {
     const fetchHostel = async () => {
@@ -61,6 +61,17 @@ const HostelInCity = () => {
                   <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg shadow-sm">
                     <p className="text-[10px] font-bold text-blue-600 uppercase tracking-wider">
                       {hostel.gender === "male" ? "♂ Boys" : "♀ Girls"}
+                    </p>
+                  </div>
+                  <div className="absolute bottom-1 right-1 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg shadow-sm">
+                    <p
+                      className={`text-[10px] font-bold ${
+                        hostel.nonveg === true
+                          ? "text-red-500"
+                          : "text-blue-600"
+                      } uppercase tracking-wider`}
+                    >
+                      {hostel.nonveg === true ? "NON-VEG" : "PURE VEG"}
                     </p>
                   </div>
                 </div>

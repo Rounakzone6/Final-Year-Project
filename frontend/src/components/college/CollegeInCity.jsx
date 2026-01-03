@@ -51,7 +51,7 @@ const CollegeInCity = () => {
               <Link
                 to={`/college/${college._id}`}
                 key={college._id}
-                className="group bg-white border w-64 h-87 border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
+                className="group bg-white border w-64 h-82 border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
               >
                 <div className="h-48 overflow-hidden">
                   <img
@@ -61,17 +61,17 @@ const CollegeInCity = () => {
                   />
                 </div>
                 <div className="p-2 relative flex flex-col grow">
-                  <h3 className="font-bold text-lg text-gray-900 leading-tight mb-1 group-hover:text-blue-600 transition-colors">
+                  <h3 className="font-bold text-lg truncate text-gray-900 leading-tight mb-1 group-hover:text-blue-600 transition-colors">
                     {college.name}
                   </h3>
-                  <div className="space-y-2 absolute bottom-11 mb-2">
+                  <div className="space-y-1 absolute bottom-11 mb-2">
                     <p className="text-sm text-gray-500 flex items-center gap-2">
                       <FaMapMarkerAlt className="text-red-400 shrink-0" />
                       <span className="truncate capitalize">{city}</span>
                     </p>
                     <p className="text-sm text-gray-500 flex items-center gap-2">
                       <FaPhoneAlt className="text-green-400 shrink-0 size-3" />
-                      <span>{college.contact}</span>
+                      <span>{college.phone}</span>
                     </p>
                   </div>
 

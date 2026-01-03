@@ -9,6 +9,7 @@ const messSchema = new mongoose.Schema(
     nonveg: { type: Boolean, default: true },
     phone: { type: Number, required: true },
     price: { type: Number, required: true },
+    isVerified: { type: Boolean, default: false },
     locations: {
       type: {
         type: String,

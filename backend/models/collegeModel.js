@@ -5,9 +5,10 @@ const collegeSchema = new mongoose.Schema(
     name: { type: String, required: true },
     city: { type: mongoose.Schema.Types.ObjectId, ref: "city", required: true },
     image: { type: String, required: true },
-    contact: { type: Number, required: true },
+    phone: { type: Number, required: true },
     url: { type: String, required: true },
     about: { type: String, required: true },
+    isVerified: { type: Boolean, default: false },
     locations: {
       type: {
         type: String,

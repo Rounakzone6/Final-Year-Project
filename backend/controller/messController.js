@@ -1,11 +1,15 @@
-// import { v2 as cloudinary } from "cloudinary";
+import fs from "fs";
+import axios from "axios";
+import { v2 as cloudinary } from "cloudinary";
 import cityModel from "../models/cityModel.js";
 import collegeModel from "../models/collegeModel.js";
 import messModel from "../models/messModel.js";
 
 const messList = async (req, res) => {
   try {
-    const mess = await messModel.find({}).populate("city college", "name");
+    const mess = await messModel
+      .find({ isVerified: true })
+      .populate("city college", "name");
     if (!mess) return res.json({ success: false, message: "messs not found" });
     res.json({ success: true, mess });
   } catch (error) {
@@ -24,83 +28,111 @@ const messDetails = async (req, res) => {
   }
 };
 
-// const addMess = async (req, res) => {
-//   try {
-//     const {
-//       name,
-//       gender,
-//       city,
-//       college,
-//       nonveg,
-//       phone,
-//       price,
-//       lat,
-//       lng,
-//       address,
-//       img1,
-//       img2,
-//       img3,
-//     } = req.body;
+// Contribution
+const messAdd = async (req, res) => {
+  try {
+    const {
+      name,
+      gender,
+      city,
+      college,
+      nonveg,
+      phone,
+      price,
+      lat,
+      lng,
+      address,
+      recaptchaToken,
+    } = req.body;
 
-//     // const imageFiles = req.files.image;
-//     // if (!imageFiles || imageFiles.length === 0) {
-//     //   return res.json({
-//     //     success: false,
-//     //     message: "Please upload at least one image",
-//     //   });
-//     // }
+    const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`;
+    const recaptchaRes = await axios.post(verifyUrl);
 
-//     const cityDoc = await cityModel.findOne({
-//       name: { $regex: new RegExp(`^${city}$`, "i") },
-//     });
-//     if (!cityDoc)
-//       return res.json({ success: false, message: "City not found" });
+    if (!recaptchaRes.data.success) {
+      return res.json({
+        success: false,
+        message: "reCAPTCHA verification failed.",
+      });
+    }
 
-//     const collegeDoc = await collegeModel.findOne({
-//       name: { $regex: new RegExp(`^${college}$`, "i") },
-//     });
+    const imageFiles = req.files;
+    if (!imageFiles || imageFiles.length === 0) {
+      return res.json({
+        success: false,
+        message: "Please upload at least one image",
+      });
+    }
 
-//     // const imageUrls = await Promise.all(
-//     //   imageFiles.map(async (file) => {
-//     //     const result = await cloudinary.uploader.upload(file.path, {
-//     //       resource_type: "image",
-//     //     });
-//     //     return result.secure_url;
-//     //   })
-//     // );
-//     const image = [img1, img2, img3].filter(Boolean);
+    const cityDoc = await cityModel.findOne({
+      name: { $regex: new RegExp(`^${city}$`, "i") },
+    });
+    if (!cityDoc)
+      return res.json({ success: false, message: "City not found" });
 
-//     const newMess = new messModel({
-//       name,
-//       gender,
-//       city: cityDoc._id,
-//       college: collegeDoc ? collegeDoc._id : null,
-//       image,
-//       nonveg,
-//       phone,
-//       price,
-//       locations: {
-//         type: "Point",
-//         coordinates: [parseFloat(lng), parseFloat(lat)],
-//         address: address,
-//       },
-//     });
+    const collegeDoc = await collegeModel.findOne({
+      name: { $regex: new RegExp(`^${college}$`, "i") },
+    });
 
-//     await newMess.save();
-//     cityDoc.mess.push(newMess._id);
-//     await cityDoc.save();
+    const imageUrls = await Promise.all(
+      imageFiles.map(async (file) => {
+        const result = await cloudinary.uploader.upload(file.path, {
+          resource_type: "image",
+        });
+        return result.secure_url;
+      })
+    );
 
-//     if (collegeDoc) {
-//       collegeDoc.mess.push(newMess._id);
-//       await collegeDoc.save();
-//     }
+    imageFiles.forEach((file) => {
+      if (fs.existsSync(file.path)) {
+        fs.unlinkSync(file.path);
+      }
+    });
 
-//     res.json({ success: true, message: "mess added successfully" });
-//   } catch (error) {
-//     console.error(error);
-//     res.json({ success: false, message: error.message });
-//   }
-// };
+    const newMess = new messModel({
+      name,
+      gender,
+      city: cityDoc._id,
+      college: collegeDoc ? collegeDoc._id : null,
+      image: imageUrls,
+      nonveg,
+      phone,
+      price,
+      locations: {
+        type: "Point",
+        coordinates: [parseFloat(lng), parseFloat(lat)],
+        address: address,
+      },
+    });
+
+    const savedMess = await newMess.save();
+    cityDoc.mess.push(newMess._id);
+    await cityDoc.save();
+
+    if (collegeDoc) {
+      collegeDoc.mess.push(newMess._id);
+      await collegeDoc.save();
+    }
+
+    await contributeModel.findOneAndUpdate(
+      {},
+      { $push: { messes: savedMess._id } },
+      { upsert: true, new: true }
+    );
+    res.json({
+      success: true,
+      message:
+        "Your contribution has been received and is under review.\nThank you!",
+    });
+  } catch (error) {
+    if (req.files) {
+      req.files.forEach((file) => {
+        if (fs.existsSync(file.path)) fs.unlinkSync(file.path);
+      });
+    }
+    console.error(error);
+    res.json({ success: false, message: error.message });
+  }
+};
 
 const addMess = async (req, res) => {
   try {
@@ -244,4 +276,4 @@ const removeMess = async (req, res) => {
   }
 };
 
-export { messList, addMess, removeMess, editMess, messDetails };
+export { messList, addMess, removeMess, editMess, messDetails, messAdd };

@@ -5,12 +5,14 @@ import axios from "axios";
 import AppContext from "../../contexts/AppContext";
 
 const PgNearCollege = () => {
+  const [pgs, setPgs] = useState([]);
+  const [localLoading, setLocalLoading] = useState(true);
+  const [filter, setFilter] = useState("All");
+  const [filterGender, setFilterGender] = useState("All");
+
   const { college } = useOutletContext();
   const { id } = useParams();
   const { backendUrl } = useContext(AppContext);
-
-  const [pgs, setPgs] = useState([]);
-  const [localLoading, setLocalLoading] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
@@ -31,9 +33,56 @@ const PgNearCollege = () => {
     if (id) loadData();
   }, [id, backendUrl]);
 
+  const filteredPgs = pgs.filter((h) => {
+    const matchesFood =
+      filter === "All" ||
+      (filter === "Veg Only" && h.nonveg === false) ||
+      (filter === "Non-Veg" && h.nonveg === true);
+
+    const matchesGender =
+      filterGender === "All" ||
+      (filterGender === "Boy's" && h.gender === "male") ||
+      (filterGender === "Girl's" && h.gender === "female");
+
+    return matchesFood && matchesGender;
+  });
+
   return (
     <div className="p-4">
       <h2 className="text-xl font-bold mb-6">PGs/Flats near {college?.name}</h2>
+      <div className="flex gap-18 my-2 items-center justify-around">
+        <div className="flex bg-gray-100 p-1 rounded-lg">
+          {["All", "Boy's", "Girl's"].map((type) => (
+            <button
+              key={type}
+              onClick={() => setFilterGender(type)}
+              className={`md:px-4 md:py-2 px-2 py-1 text-sm rounded-md font-medium transition-all ${
+                filterGender === type
+                  ? "bg-white shadow text-blue-600"
+                  : "text-gray-600 hover:text-blue-500"
+              }`}
+            >
+              {type}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex bg-gray-100 p-1 rounded-lg">
+          {["All", "Veg Only", "Non-Veg"].map((type) => (
+            <button
+              key={type}
+              onClick={() => setFilter(type)}
+              className={`md:px-4 md:py-2 px-2 py-1 rounded-md text-sm font-medium transition-all ${
+                filter === type
+                  ? "bg-white shadow text-blue-600"
+                  : "text-gray-600 hover:text-blue-500"
+              }`}
+            >
+              {type}
+            </button>
+          ))}
+        </div>
+      </div>
       {localLoading ? (
         <div className="flex gap-4">
           {[1, 2, 3, 4].map((n) => (
@@ -45,8 +94,8 @@ const PgNearCollege = () => {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {pgs.length > 0 ? (
-            pgs.map((item) => (
+          {filteredPgs.length > 0 ? (
+            filteredPgs.map((item) => (
               <Link
                 to={`/hostel/${item._id}`}
                 key={item._id}

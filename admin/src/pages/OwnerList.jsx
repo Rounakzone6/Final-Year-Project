@@ -58,7 +58,7 @@ const OwnerList = () => {
                 >
                   {owner.name}
                 </NavLink>
-                <p className="text-xs text-gray-500">{owner.contact}</p>
+                <p className="text-xs text-gray-500">{owner.phone}</p>
                 <p
                   className={`text-sm ${
                     owner.verified ? "text-blue-500" : "text-red-500"
