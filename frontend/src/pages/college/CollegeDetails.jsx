@@ -4,6 +4,8 @@ import axios from "axios";
 import { FaGraduationCap, FaMapMarkerAlt, FaCompass } from "react-icons/fa";
 import AppContext from "@/contexts/AppContext";
 import PlaceMap from "@/components/PlaceMap";
+import Review from "@/components/Review";
+import { reviews } from "@/assets";
 
 const CollegeDetails = () => {
   const { id } = useParams();
@@ -98,6 +100,8 @@ const CollegeDetails = () => {
       <main className="mb-10 min-h-75">
         <Outlet context={{ college }} />
       </main>
+
+      <Review reviews={reviews} />
 
       {/* Interactive Map Section */}
       <section className="mt-12">

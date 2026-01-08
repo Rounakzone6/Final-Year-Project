@@ -10,6 +10,8 @@ import {
   FaGraduationCap,
   FaDirections,
 } from "react-icons/fa";
+import Review from "@/components/Review";
+import { reviews } from "@/assets";
 
 const HostelDetails = () => {
   const { id } = useParams();
@@ -153,6 +155,7 @@ const HostelDetails = () => {
           </div>
         </div>
       </div>
+      <Review reviews={reviews} />
       <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t border-gray-200 p-4 z-50">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="hidden sm:block">
