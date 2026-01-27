@@ -9,7 +9,6 @@ import {
 const reviewRoute = express.Router();
 
 reviewRoute.get("/", reviewList);
-// reviewRoute.js
 reviewRoute.post("/add", upload.single("image"), sendReview);
 reviewRoute.delete("/delete", deleteReview);
 

@@ -27,6 +27,7 @@ import MessNearCollege from "./components/mess/MessNearCollege";
 import OwnerRequest from "./pages/OwnerRequest";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import PageNotFound from "./components/PageNotFound";
 
 const App = () => {
   return (
@@ -35,7 +36,8 @@ const App = () => {
       <ToastContainer />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/owner" element={<OwnerRequest />} />
+        <Route path="*" element={<PageNotFound />} />
+        <Route path="/owner-request" element={<OwnerRequest />} />
         <Route path="/city" element={<City />}>
           <Route path=":id" element={<CityDetails />} />
         </Route>

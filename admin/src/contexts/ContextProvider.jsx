@@ -37,10 +37,26 @@ const ContextProvider = (props) => {
           await Promise.all([
             axios.get(`${backendUrl}/state`),
             axios.get(`${backendUrl}/city`),
-            axios.get(`${backendUrl}/college`),
-            axios.get(`${backendUrl}/hostel`),
-            axios.get(`${backendUrl}/pg`),
-            axios.get(`${backendUrl}/mess`),
+            axios.get(`${backendUrl}/admin/college`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }),
+            axios.get(`${backendUrl}/admin/hostel`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }),
+            axios.get(`${backendUrl}/admin/pg`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }),
+            axios.get(`${backendUrl}/admin/mess`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }),
           ]);
         if (stateRes.data.success) {
           setStateList(stateRes.data.states);
@@ -67,7 +83,7 @@ const ContextProvider = (props) => {
       }
     };
     if (backendUrl) loadData();
-  }, [backendUrl]);
+  }, [backendUrl, token]);
 
   useEffect(() => {
     if (!token) return;
@@ -146,7 +162,7 @@ const ContextProvider = (props) => {
       cityList,
       collegeList,
       navigate,
-    ]
+    ],
   );
 
   return (

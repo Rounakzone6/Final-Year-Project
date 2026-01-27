@@ -1,6 +1,7 @@
 import logo from "./logo.png";
+import error404 from "./image.png";
 
-export { logo };
+export { logo, error404 };
 
 export const reviews = [
   {

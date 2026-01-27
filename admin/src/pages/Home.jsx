@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
+import PageNotFound from "@/components/PageNotFound";
 import Dashboard from "./Dashboard";
 
 import AdminManage from "@/components/AdminManage";
@@ -34,6 +35,7 @@ const Home = () => {
         <div className="bg-gray-100 w-full p-2">
           <Routes>
             <Route path="/" element={<Dashboard />} />
+            <Route path="*" element={<PageNotFound />} />
             <Route path="/manage" element={<AdminManage />} />
             <Route path="/admin/register" element={<NewAdmin />} />
             <Route path="/city" element={<City />} />

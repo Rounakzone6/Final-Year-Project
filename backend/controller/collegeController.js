@@ -5,6 +5,24 @@ import cityModel from "../models/cityModel.js";
 import collegeModel from "../models/collegeModel.js";
 import contributeModel from "../models/contributeModel.js";
 
+const adminCollegeList = async (req, res) => {
+  try {
+    const colleges = await collegeModel.find({}).populate({
+      path: "city",
+      select: "name state",
+      populate: {
+        path: "state",
+        select: "name",
+      },
+    });
+    if (!colleges)
+      return res.json({ success: false, message: "Colleges not found" });
+    res.json({ success: true, colleges });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
 const collegeList = async (req, res) => {
   try {
     const colleges = await collegeModel.find({ isVerified: true }).populate({
@@ -147,7 +165,7 @@ const collegeAdd = async (req, res) => {
     await contributeModel.findOneAndUpdate(
       {},
       { $push: { colleges: savedCollege._id } },
-      { upsert: true, new: true }
+      { upsert: true, new: true },
     );
 
     res.json({
@@ -199,7 +217,7 @@ const editCollege = async (req, res) => {
     const updatedCollege = await collegeModel.findByIdAndUpdate(
       id,
       updateData,
-      { new: true }
+      { new: true },
     );
     if (existingCollege.city.toString() !== cityDoc._id.toString()) {
       await cityModel.findByIdAndUpdate(existingCollege.city, {
@@ -236,6 +254,34 @@ const removeCollege = async (req, res) => {
       success: true,
       message: "College deleted and city records updated",
     });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+const verifyCollege = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const college = await collegeModel.findByIdAndUpdate(
+      id,
+      { isVerified: true },
+      { new: true },
+    );
+    res.json({ success: true, message: "College Verified" });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+const unverifyCollege = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const college = await collegeModel.findByIdAndUpdate(
+      id,
+      { isVerified: false },
+      { new: true },
+    );
+    res.json({ success: true, message: "College Unverified" });
   } catch (error) {
     res.json({ success: false, message: error.message });
   }
@@ -281,6 +327,7 @@ const messNearCollege = async (req, res) => {
 };
 
 export {
+  adminCollegeList,
   collegeList,
   collegeDetails,
   collegeAdd,
@@ -290,4 +337,6 @@ export {
   hostelNearCollege,
   pgNearCollege,
   messNearCollege,
+  verifyCollege,
+  unverifyCollege,
 };

@@ -5,6 +5,16 @@ import cityModel from "../models/cityModel.js";
 import collegeModel from "../models/collegeModel.js";
 import messModel from "../models/messModel.js";
 
+const adminMessList = async (req, res) => {
+  try {
+    const mess = await messModel.find({}).populate("city college", "name");
+    if (!mess) return res.json({ success: false, message: "messs not found" });
+    res.json({ success: true, mess });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
 const messList = async (req, res) => {
   try {
     const mess = await messModel
@@ -79,7 +89,7 @@ const messAdd = async (req, res) => {
           resource_type: "image",
         });
         return result.secure_url;
-      })
+      }),
     );
 
     imageFiles.forEach((file) => {
@@ -116,7 +126,7 @@ const messAdd = async (req, res) => {
     await contributeModel.findOneAndUpdate(
       {},
       { $push: { messes: savedMess._id } },
-      { upsert: true, new: true }
+      { upsert: true, new: true },
     );
     res.json({
       success: true,
@@ -276,4 +286,42 @@ const removeMess = async (req, res) => {
   }
 };
 
-export { messList, messDetails, messAdd, addMess, removeMess, editMess };
+const verifyMess = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const mess = await messModel.findByIdAndUpdate(
+      id,
+      { isVerified: true },
+      { new: true },
+    );
+    res.json({ success: true, message: "Mess Verified" });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+const unverifyMess = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const mess = await messModel.findByIdAndUpdate(
+      id,
+      { isVerified: false },
+      { new: true },
+    );
+    res.json({ success: true, message: "Mess unverified" });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+export {
+  adminMessList,
+  messList,
+  messDetails,
+  messAdd,
+  addMess,
+  removeMess,
+  editMess,
+  verifyMess,
+  unverifyMess,
+};

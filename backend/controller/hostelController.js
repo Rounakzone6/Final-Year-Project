@@ -5,6 +5,17 @@ import cityModel from "../models/cityModel.js";
 import collegeModel from "../models/collegeModel.js";
 import hostelModel from "../models/hostelModel.js";
 
+const adminHostelList = async (req, res) => {
+  try {
+    const hostels = await hostelModel.find({}).populate("city college", "name");
+    if (!hostels)
+      return res.json({ success: false, message: "Hostels not found" });
+    res.json({ success: true, hostels });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
 const hostelList = async (req, res) => {
   try {
     const hostels = await hostelModel
@@ -144,7 +155,7 @@ const hostelAdd = async (req, res) => {
           resource_type: "image",
         });
         return result.secure_url;
-      })
+      }),
     );
 
     imageFiles.forEach((file) => {
@@ -181,7 +192,7 @@ const hostelAdd = async (req, res) => {
     await contributeModel.findOneAndUpdate(
       {},
       { $push: { hostels: savedHostel._id } },
-      { upsert: true, new: true }
+      { upsert: true, new: true },
     );
 
     res.json({
@@ -284,11 +295,42 @@ const removeHostel = async (req, res) => {
   }
 };
 
+const verifyHostel = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const hostel = await hostelModel.findByIdAndUpdate(
+      id,
+      { isVerified: true },
+      { new: true },
+    );
+    res.json({ success: true, message: "Hostel Verified" });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+const unverifyHostel = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const hostel = await hostelModel.findByIdAndUpdate(
+      id,
+      { isVerified: false },
+      { new: true },
+    );
+    res.json({ success: true, message: "Hostel Unverified" });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
 export {
+  adminHostelList,
   hostelList,
   hostelDetails,
   hostelAdd,
   addHostel,
   editHostel,
   removeHostel,
+  verifyHostel,
+  unverifyHostel,
 };

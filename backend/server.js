@@ -14,6 +14,8 @@ import messRoute from "./router/messRoute.js";
 import reviewRoute from "./router/reviewRoute.js";
 import ownerRoute from "./router/ownerRoute.js";
 import contributeRoute from "./router/contributeRoute.js";
+import swaggerSpec from "./config/swagger.js";
+import { apiReference } from "@scalar/express-api-reference";
 import { fileURLToPath } from "url";
 
 const app = express();
@@ -44,6 +46,13 @@ app.use("/contribute", contributeRoute);
 app.get("/", (req, res) => {
   res.send("Hello world");
 });
+
+app.use(
+  "/api-docs",
+  apiReference({
+    spec: swaggerSpec,
+  })
+);
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);

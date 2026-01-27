@@ -1,9 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { FaEarthAsia } from "react-icons/fa6";
 import axios from "axios";
 import AppContext from "@/contexts/AppContext";
+import { toast } from "react-toastify";
+import { FaEarthAsia } from "react-icons/fa6";
+import { MdVerifiedUser } from "react-icons/md";
+import { GoUnverified } from "react-icons/go";
 import {
   FaDirections,
   FaEdit,
@@ -41,7 +43,7 @@ const CollegeDetails = () => {
   const removeCollege = async (id) => {
     if (
       !window.confirm(
-        "Are you sure you want to remove this college? This will not delete associated hostels/messes."
+        "Are you sure you want to remove this college? This will not delete associated hostels/messes.",
       )
     )
       return;
@@ -52,6 +54,44 @@ const CollegeDetails = () => {
       if (res.data.success) {
         toast.success("College removed successfully");
         navigate("/college");
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const verifyCollege = async (id) => {
+    try {
+      const res = await axios.patch(
+        `${backendUrl}/college/verify/${id}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+      if (res.data.success) {
+        toast.success(res.data.message);
+      } else {
+        toast.error(res.data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const unVerifyCollege = async (id) => {
+    try {
+      const res = await axios.patch(
+        `${backendUrl}/college/unverify/${id}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+      if (res.data.success) {
+        toast.success(res.data.message);
+      } else {
+        toast.error(res.data.message);
       }
     } catch (error) {
       toast.error(error.message);
@@ -80,7 +120,7 @@ const CollegeDetails = () => {
   return (
     <div className="max-w-6xl mx-auto p-4 md:p-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-black text-slate-900 capitalize tracking-tight">
+        <h1 className="text-4xl font-black text-slate-900 tracking-tight">
           {college.name}
         </h1>
         <div className="flex items-center gap-2 mt-2 text-blue-600 font-bold uppercase text-xs tracking-widest">
@@ -101,8 +141,10 @@ const CollegeDetails = () => {
               alt={college.name}
               loading="lazy"
             />
-            <div className="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[10px] font-black uppercase text-slate-800">
-              Verified Campus
+            <div
+              className={`absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[10px] font-black uppercase ${college.isVerified ? "text-slate-800" : "text-red-800"}`}
+            >
+              {college.isVerified ? "Verified Campus" : "Unverified College"}
             </div>
           </div>
 
@@ -111,7 +153,7 @@ const CollegeDetails = () => {
               onClick={() =>
                 openInMaps(
                   college.locations.coordinates[0],
-                  college.locations.coordinates[1]
+                  college.locations.coordinates[1],
                 )
               }
               className="flex items-center justify-center gap-2 bg-slate-900 text-white py-3 rounded-2xl font-bold hover:bg-slate-800 transition-all active:scale-95 text-sm"
@@ -210,6 +252,26 @@ const CollegeDetails = () => {
             >
               <FaTrash /> Delete Record
             </button>
+
+            {college.isVerified ? (
+              <button
+                onClick={() => unVerifyCollege(college._id)}
+                className="flex items-center gap-2 px-6 py-3 bg-blue-50 text-blue-500 font-bold rounded-2xl hover:bg-blue-300 hover:text-white transition-all shadow-sm"
+              >
+                <span className="flex gap-1 items-center">
+                  <GoUnverified /> Unverify College
+                </span>
+              </button>
+            ) : (
+              <button
+                onClick={() => verifyCollege(college._id)}
+                className="flex items-center gap-2 px-6 py-3 bg-green-50 text-green-600 font-bold rounded-2xl hover:bg-green-600 hover:text-white transition-all shadow-sm"
+              >
+                <span className="flex gap-1 items-center">
+                  <MdVerifiedUser /> Verify College
+                </span>
+              </button>
+            )}
           </div>
         </div>
       </div>

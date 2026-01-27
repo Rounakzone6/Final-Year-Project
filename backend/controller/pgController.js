@@ -17,6 +17,16 @@ const pgList = async (req, res) => {
   }
 };
 
+const adminPgList = async (req, res) => {
+  try {
+    const pgs = await pgModel.find({}).populate("city college", "name");
+    if (!pgs) return res.json({ success: false, message: "pgs not found" });
+    res.json({ success: true, pgs });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
 const pgDetails = async (req, res) => {
   try {
     const { id } = req.params;
@@ -79,7 +89,7 @@ const pgAdd = async (req, res) => {
           resource_type: "image",
         });
         return result;
-      })
+      }),
     );
 
     imageFiles.forEach((file) => {
@@ -116,7 +126,7 @@ const pgAdd = async (req, res) => {
     await contributeModel.findOneAndUpdate(
       {},
       { $push: { pgs: savedPg._id } },
-      { upsert: true, new: true }
+      { upsert: true, new: true },
     );
 
     res.json({
@@ -174,7 +184,7 @@ const addpg = async (req, res) => {
           resource_type: "image",
         });
         return result;
-      })
+      }),
     );
 
     const newpg = new pgModel({
@@ -293,4 +303,42 @@ const removepg = async (req, res) => {
   }
 };
 
-export { pgList, pgDetails, pgAdd, addpg, editpg, removepg };
+const verifyPg = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const pg = await pgModel.findByIdAndUpdate(
+      id,
+      { isVerified: true },
+      { new: true },
+    );
+    res.json({ success: true, message: "Pg Verified" });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+const unverifyPg = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const pg = await pgModel.findByIdAndUpdate(
+      id,
+      { isVerified: false },
+      { new: true },
+    );
+    res.json({ success: true, message: "Pg unverified" });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+export {
+  adminPgList,
+  pgList,
+  pgDetails,
+  pgAdd,
+  addpg,
+  editpg,
+  removepg,
+  verifyPg,
+  unverifyPg,
+};
