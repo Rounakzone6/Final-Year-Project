@@ -28,12 +28,14 @@ import OwnerRequest from "./pages/OwnerRequest";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import PageNotFound from "./components/PageNotFound";
+import ScrollToTop from "./components/ScrollToTop";
 
 const App = () => {
   return (
     <>
       <Navbar />
       <ToastContainer />
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="*" element={<PageNotFound />} />
