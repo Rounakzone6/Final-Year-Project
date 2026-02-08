@@ -23,10 +23,13 @@ const City = () => {
     "Tamil Nadu",
     "Haryana",
     "Telangana",
+    "Kerala",
+    "West Bengal",
+    "Assam",
   ];
 
-  const filteredCity = cityList.filter((h) => {
-    return filter === "All" || h.state?.name === filter;
+  const filteredCity = cityList.filter((city) => {
+    return filter === "All" || city.state?.name === filter;
   });
 
   const totalPages = Math.ceil(filteredCity.length / itemsPerPage);
@@ -54,7 +57,7 @@ const City = () => {
               Explore Cities
             </h1>
 
-            <div className="mt-4 flex overflow-x-auto no-scrollbar pb-2 -mx-2 px-2">
+            <div className="mt-4 flex overflow-x-hidden no-scrollbar pb-2 -mx-2 px-2">
               <div className="flex gap-2">
                 {states.map((type) => (
                   <button
