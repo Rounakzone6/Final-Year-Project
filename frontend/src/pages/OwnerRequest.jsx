@@ -5,9 +5,10 @@ import axios from "axios";
 import AppContext from "@/contexts/AppContext";
 
 const OwnerRequest = () => {
+  const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const { loading, setLoading, backendUrl } = useContext(AppContext);
+  const { backendUrl } = useContext(AppContext);
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();

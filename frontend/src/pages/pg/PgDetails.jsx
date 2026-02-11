@@ -64,7 +64,6 @@ const PgDetails = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-4 md:p-6 mb-24">
-      {/* Header */}
       <div className="mb-6">
         <h1 className="text-2xl md:text-4xl font-black text-slate-900 capitalize flex items-center gap-2">
           <FaHome className="text-blue-600 hidden md:block" /> {pg.name}
@@ -81,7 +80,6 @@ const PgDetails = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
-        {/* Image Gallery */}
         <div className="space-y-4">
           <div className="aspect-4/3 md:aspect-video overflow-hidden rounded-4xl shadow-2xl bg-slate-100 border border-slate-100">
             <img
@@ -107,8 +105,6 @@ const PgDetails = () => {
             ))}
           </div>
         </div>
-
-        {/* Content Section */}
         <div className="flex flex-col gap-6">
           <div className="bg-white p-6 md:p-8 rounded-4xl border border-slate-100 shadow-sm space-y-6">
             <div className="flex justify-between items-start">
@@ -166,8 +162,6 @@ const PgDetails = () => {
               </p>
             </div>
           </div>
-
-          {/* Map Section */}
           <div className="overflow-hidden shadow-inner border border-slate-100 h-48 md:h-64 rounded-4xl relative">
             <div className="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full shadow-md text-[10px] font-black uppercase text-slate-600">
               Interactive Map

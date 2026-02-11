@@ -14,19 +14,16 @@ const College = () => {
   const { loading, collegeList } = useContext(AppContext);
   const location = useLocation();
 
-  // States
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 15;
 
   const isMainPage = location.pathname === "/college";
 
-  // Logic: Filter first
   const filteredColleges = collegeList.filter((college) =>
     college.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Pagination Logic
   const totalPages = Math.ceil(filteredColleges.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -35,7 +32,6 @@ const College = () => {
     indexOfLastItem
   );
 
-  // ESLint Friendly: Reset page to 1 when searching
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
     setCurrentPage(1);
@@ -52,7 +48,6 @@ const College = () => {
       {isMainPage ? (
         <div className="p-3 md:p-8 bg-slate-50 min-h-screen">
           <div className="max-w-7xl mx-auto">
-            {/* Header Section */}
             <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
                 <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
@@ -63,8 +58,6 @@ const College = () => {
                   Find the best educational institutions across cities.
                 </p>
               </div>
-
-              {/* Enhanced Search Bar */}
               <div className="relative group w-full md:w-80">
                 <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
                 <input
@@ -136,8 +129,6 @@ const College = () => {
                     </div>
                   )}
                 </div>
-
-                {/* Pagination UI */}
                 {!loading && totalPages > 1 && (
                   <div className="mt-12 flex justify-center items-center gap-2">
                     <button

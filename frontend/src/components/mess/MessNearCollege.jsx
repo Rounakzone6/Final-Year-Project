@@ -39,7 +39,6 @@ const MessNearCollege = () => {
 
   return (
     <div className="py-8">
-      {/* Header Section */}
       <div className="mb-8">
         <h2 className="text-2xl font-black text-slate-900 tracking-tight">
           Canteens & Mess near{" "}
@@ -68,7 +67,6 @@ const MessNearCollege = () => {
                 key={item._id}
                 className="group flex flex-col sm:flex-row bg-white rounded-4xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden"
               >
-                {/* Image Section */}
                 <div className="sm:w-44 h-44 sm:h-full relative overflow-hidden shrink-0">
                   <img
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
@@ -88,8 +86,6 @@ const MessNearCollege = () => {
                     </span>
                   </div>
                 </div>
-
-                {/* Info Section */}
                 <div className="p-5 flex flex-col justify-between flex-1">
                   <div>
                     <div className="flex justify-between items-start">

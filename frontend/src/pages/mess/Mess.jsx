@@ -15,7 +15,6 @@ const Mess = () => {
   const { messList, loading } = useContext(AppContext);
   const location = useLocation();
 
-  // State management
   const [filter, setFilter] = useState("All");
   const [filterGender, setFilterGender] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,7 +22,6 @@ const Mess = () => {
 
   const isMainPage = location.pathname === "/mess";
 
-  // Filter Logic
   const filteredMess = messList.filter((h) => {
     const matchesFood =
       filter === "All" ||
@@ -38,13 +36,11 @@ const Mess = () => {
     return matchesFood && matchesGender;
   });
 
-  // Pagination Logic
   const totalPages = Math.ceil(filteredMess.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredMess.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Optimized handlers to reset page on filter change
   const handleGenderFilter = (val) => {
     setFilterGender(val);
     setCurrentPage(1);
@@ -73,7 +69,6 @@ const Mess = () => {
       <CityListInMessPage />
       {isMainPage ? (
         <div className="max-w-7xl mx-auto p-3 md:p-8 bg-slate-50 min-h-screen">
-          {/* Header & Filter Controls */}
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-6">
             <div>
               <h1 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2">
@@ -85,7 +80,6 @@ const Mess = () => {
             </div>
 
             <div className="flex flex-wrap gap-3 items-center w-full lg:w-auto">
-              {/* Gender Filter */}
               <div className="flex bg-slate-200/50 p-1 rounded-xl flex-1 md:flex-none">
                 {["All", "Boy's", "Girl's"].map((type) => (
                   <button
@@ -101,8 +95,6 @@ const Mess = () => {
                   </button>
                 ))}
               </div>
-
-              {/* Food Filter */}
               <div className="flex bg-slate-200/50 p-1 rounded-xl flex-1 md:flex-none">
                 {["All", "Veg Only", "Non-Veg"].map((type) => (
                   <button
@@ -120,8 +112,6 @@ const Mess = () => {
               </div>
             </div>
           </div>
-
-          {/* Grid Layout: 2 col mobile, 3 col tablet, 4 col desktop */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
             {currentItems.map((mess) => (
               <Link
@@ -193,8 +183,6 @@ const Mess = () => {
               </Link>
             ))}
           </div>
-
-          {/* Pagination UI */}
           {!loading && totalPages > 1 && (
             <div className="mt-12 flex justify-center items-center gap-2">
               <button

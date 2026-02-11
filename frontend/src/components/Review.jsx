@@ -14,8 +14,6 @@ const Review = ({ reviews }) => {
             className="bg-white p-4 rounded-4xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-500 group relative"
           >
             <FaQuoteLeft className="absolute top-6 right-8 text-slate-100 text-5xl group-hover:text-blue-50 transition-colors" />
-
-            {/* Rating */}
             <div className="flex gap-2 items-center">
               <p>{item.rating}</p>
               <div className="flex gap-1 text-amber-400">

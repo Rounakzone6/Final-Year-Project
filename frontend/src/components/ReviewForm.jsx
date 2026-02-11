@@ -6,6 +6,7 @@ import AppContext from "@/contexts/AppContext";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const ReviewForm = () => {
+  const [loading, setLoading] = useState(false);
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const [captchaToken, setCaptchaToken] = useState("");
@@ -17,7 +18,7 @@ const ReviewForm = () => {
   });
 
   const recaptchaRef = useRef(null);
-  const { loading, setLoading, backendUrl, location } = useContext(AppContext);
+  const { backendUrl, location } = useContext(AppContext);
   const pathParts = location.pathname.split("/").filter(Boolean);
   const type = pathParts[0];
   const id = pathParts[pathParts.length - 1];

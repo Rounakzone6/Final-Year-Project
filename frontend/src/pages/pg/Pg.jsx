@@ -15,7 +15,6 @@ const Pg = () => {
   const { pgList, loading } = useContext(AppContext);
   const location = useLocation();
 
-  // State management
   const [filter, setFilter] = useState("All");
   const [filterGender, setFilterGender] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,7 +22,6 @@ const Pg = () => {
 
   const isMainPage = location.pathname === "/pg";
 
-  // Filter Logic
   const filteredPgs = pgList.filter((h) => {
     const matchesFood =
       filter === "All" ||
@@ -38,13 +36,11 @@ const Pg = () => {
     return matchesFood && matchesGender;
   });
 
-  // Pagination Logic
   const totalPages = Math.ceil(filteredPgs.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredPgs.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Reset page to 1 when filters change
   const handleGenderFilter = (val) => {
     setFilterGender(val);
     setCurrentPage(1);
@@ -75,7 +71,6 @@ const Pg = () => {
       <CityListInPgPage />
       {isMainPage ? (
         <div className="max-w-7xl mx-auto p-3 md:p-8 bg-slate-50 min-h-screen">
-          {/* Header & Filter Controls */}
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-6">
             <div>
               <h1 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2">
@@ -120,8 +115,6 @@ const Pg = () => {
               </div>
             </div>
           </div>
-
-          {/* Grid Layout */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
             {currentItems.map((pg) => (
               <Link
@@ -193,8 +186,6 @@ const Pg = () => {
               </Link>
             ))}
           </div>
-
-          {/* Pagination UI */}
           {!loading && totalPages > 1 && (
             <div className="mt-12 flex justify-center items-center gap-2">
               <button

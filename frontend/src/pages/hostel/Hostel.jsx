@@ -14,7 +14,6 @@ const Hostel = () => {
   const { hostelList, loading } = useContext(AppContext);
   const location = useLocation();
 
-  // State management
   const [filter, setFilter] = useState("All");
   const [filterGender, setFilterGender] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
@@ -22,7 +21,6 @@ const Hostel = () => {
 
   const isMainPage = location.pathname === "/hostel";
 
-  // Logic: Filter first
   const filteredHostels = hostelList.filter((h) => {
     const matchesFood =
       filter === "All" ||
@@ -37,13 +35,11 @@ const Hostel = () => {
     return matchesFood && matchesGender;
   });
 
-  // Pagination Logic
   const totalPages = Math.ceil(filteredHostels.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredHostels.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Batch updates for Filter + Page reset
   const handleGenderFilter = (val) => {
     setFilterGender(val);
     setCurrentPage(1);
@@ -74,7 +70,6 @@ const Hostel = () => {
       <CityListInHostelPage />
       {isMainPage ? (
         <div className="max-w-7xl mx-auto p-3 md:p-8 bg-slate-50 min-h-screen">
-          {/* Header & Filter Controls */}
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-6">
             <div>
               <h1 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">
@@ -86,7 +81,6 @@ const Hostel = () => {
             </div>
 
             <div className="flex flex-wrap gap-3 items-center">
-              {/* Gender Filter */}
               <div className="flex bg-slate-200/50 p-1 rounded-xl backdrop-blur-sm">
                 {["All", "Boy's", "Girl's"].map((type) => (
                   <button
@@ -102,8 +96,6 @@ const Hostel = () => {
                   </button>
                 ))}
               </div>
-
-              {/* Food Filter */}
               <div className="flex bg-slate-200/50 p-1 rounded-xl backdrop-blur-sm">
                 {["All", "Veg Only", "Non-Veg"].map((type) => (
                   <button
@@ -121,8 +113,6 @@ const Hostel = () => {
               </div>
             </div>
           </div>
-
-          {/* Grid Layout: 2 col mobile, 3 col tablet */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
             {currentItems.map((hostel) => (
               <Link
@@ -137,8 +127,6 @@ const Hostel = () => {
                     alt={hostel.name}
                     loading="lazy"
                   />
-
-                  {/* Food Badge */}
                   <div className="absolute top-2 left-2">
                     <span
                       className={`px-2 py-1 rounded-lg text-[10px] font-black uppercase shadow-lg backdrop-blur-md ${
@@ -150,8 +138,6 @@ const Hostel = () => {
                       {hostel.nonveg ? "Non-Veg" : "Pure Veg"}
                     </span>
                   </div>
-
-                  {/* Price Tag */}
                   <div className="absolute bottom-2 right-2 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-xl shadow-lg border border-white/50">
                     <p className="text-blue-600 font-black text-sm md:text-base">
                       ₹{hostel.price}
@@ -196,8 +182,6 @@ const Hostel = () => {
               </Link>
             ))}
           </div>
-
-          {/* Pagination */}
           {!loading && totalPages > 1 && (
             <div className="mt-12 flex justify-center items-center gap-2">
               <button
@@ -249,7 +233,6 @@ const Hostel = () => {
   );
 };
 
-// Internal icon mapping helpers
 const FaUniversity = (props) => <span {...props}>🎓</span>;
 const FaMapMarkerAlt = (props) => <span {...props}>📍</span>;
 

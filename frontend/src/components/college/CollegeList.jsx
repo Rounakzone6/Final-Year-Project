@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
 import AppContext from "@/contexts/AppContext";
+import { FaArrowRight } from "react-icons/fa";
 
 const CollegeList = () => {
   const { loading, collegeList } = useContext(AppContext);
@@ -20,10 +21,8 @@ const CollegeList = () => {
             to="/college"
             className="text-blue-600 font-bold hover:text-blue-800 transition-all text-sm flex items-center gap-1 group"
           >
-            See All{" "}
-            <span className="group-hover:translate-x-1 transition-transform">
-              →
-            </span>
+            See All
+            <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
 

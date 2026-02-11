@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import AppContext from "./AppContext";
@@ -18,7 +18,6 @@ const ContextProvider = (props) => {
   const googleApiKey = import.meta.env.VITE_GOOGLE_MAP_API_KEY;
 
   const navigate = useNavigate();
-  const location = useLocation();
 
   useEffect(() => {
     const loadData = async () => {
@@ -73,9 +72,7 @@ const ContextProvider = (props) => {
       hostelList,
       pgList,
       messList,
-      location,
       navigate,
-      setLoading,
       setStateList,
       setCityList,
       setCollegeList,
@@ -87,7 +84,6 @@ const ContextProvider = (props) => {
       navigate,
       backendUrl,
       loading,
-      location,
       mapId,
       googleApiKey,
       stateList,
@@ -96,7 +92,7 @@ const ContextProvider = (props) => {
       hostelList,
       pgList,
       messList,
-    ]
+    ],
   );
 
   return (

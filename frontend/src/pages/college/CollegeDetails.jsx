@@ -9,8 +9,9 @@ import { reviews } from "@/assets";
 
 const CollegeDetails = () => {
   const { id } = useParams();
+  const [loading, setLoading] = useState(false);
   const [college, setCollege] = useState(null);
-  const { backendUrl, loading, setLoading } = useContext(AppContext);
+  const { backendUrl } = useContext(AppContext);
 
   useEffect(() => {
     const fetchCollege = async () => {

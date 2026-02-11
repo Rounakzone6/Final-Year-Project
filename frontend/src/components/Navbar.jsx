@@ -18,15 +18,14 @@ const Navbar = () => {
   ];
 
   const handleNavLinkClick = () => {
-    setIsOpen(false); // Close the menu
-    window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll up
+    setIsOpen(false); 
+    window.scrollTo({ top: 0, behavior: "smooth" }); 
   };
 
   return (
     <>
       <nav className="bg-white/80 backdrop-blur-md border-b border-slate-100 sticky top-0 z-60 h-16 md:h-20 flex items-center">
         <div className="flex w-[92%] max-w-7xl mx-auto justify-between items-center">
-          {/* Logo */}
           <Link
             to="/"
             onClick={handleNavLinkClick}
@@ -39,8 +38,6 @@ const Navbar = () => {
               alt="Nestify Logo"
             />
           </Link>
-
-          {/* Desktop Nav */}
           <div className="hidden lg:flex gap-8">
             {navLinks.map((link) => (
               <NavLink
@@ -65,8 +62,6 @@ const Navbar = () => {
               </NavLink>
             ))}
           </div>
-
-          {/* Actions */}
           <div className="flex items-center gap-3 md:gap-4">
             <button
               onClick={() => {
@@ -87,8 +82,6 @@ const Navbar = () => {
             </button>
           </div>
         </div>
-
-        {/* Mobile Dropdown Menu */}
         <div
           className={`lg:hidden absolute top-full left-0 w-full bg-white border-b shadow-xl transition-all duration-300 ease-in-out overflow-hidden z-50 ${
             isOpen ? "max-h-125 opacity-100" : "max-h-0 opacity-0"
@@ -123,24 +116,17 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
-
-      {/* Modal Overlay for Contribute Component */}
       {contributing && (
         <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
-          {/* Backdrop */}
           <div
             className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
             onClick={() => setContributing(false)}
           ></div>
-
-          {/* Modal Content Wrapper */}
           <div className="relative z-10 w-full max-w-2xl bg-white rounded-4xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
             <Contribute setContributing={setContributing} />
           </div>
         </div>
       )}
-
-      {/* Mobile Menu Backdrop */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/20 z-40 lg:hidden"

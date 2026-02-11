@@ -50,7 +50,6 @@ const HostelNearCollege = () => {
 
   return (
     <div className="py-8">
-      {/* Header & Filter Section */}
       <div className="flex flex-col gap-6 mb-8">
         <div>
           <h2 className="text-2xl font-black text-slate-900 tracking-tight">
@@ -60,7 +59,6 @@ const HostelNearCollege = () => {
         </div>
 
         <div className="flex flex-wrap gap-4 items-center">
-          {/* Gender Filter Segment */}
           <div className="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
             {["All", "Boy's", "Girl's"].map((type) => (
               <button
@@ -76,8 +74,6 @@ const HostelNearCollege = () => {
               </button>
             ))}
           </div>
-
-          {/* Food Filter Segment */}
           <div className="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
             {["All", "Veg Only", "Non-Veg"].map((type) => (
               <button
@@ -111,7 +107,6 @@ const HostelNearCollege = () => {
                 key={item._id}
                 className="group flex flex-col sm:flex-row bg-white rounded-4xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500 overflow-hidden"
               >
-                {/* Image Section */}
                 <div className="sm:w-48 h-48 sm:h-full relative overflow-hidden shrink-0">
                   <img
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
@@ -127,8 +122,6 @@ const HostelNearCollege = () => {
                     </span>
                   </div>
                 </div>
-
-                {/* Info Section */}
                 <div className="p-6 flex flex-col justify-between flex-1">
                   <div>
                     <div className="flex justify-between items-start mb-1">

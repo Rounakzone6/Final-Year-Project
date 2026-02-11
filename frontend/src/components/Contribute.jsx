@@ -7,6 +7,7 @@ import AppContext from "@/contexts/AppContext";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const Contribute = ({ setContributing }) => {
+  const [loading, setLoading] = useState(false);
   const [type, setType] = useState("College");
   const [active, setActive] = useState("College");
   const [captchaToken, setCaptchaToken] = useState("");
@@ -14,7 +15,7 @@ const Contribute = ({ setContributing }) => {
   const [previews, setPreviews] = useState([]);
 
   const recaptchaRef = useRef(null);
-  const { backendUrl, loading, setLoading } = useContext(AppContext);
+  const { backendUrl } = useContext(AppContext);
 
   const items = ["College", "Hostel", "PG/Flat", "Canteen/Mess"];
 
@@ -41,8 +42,7 @@ const Contribute = ({ setContributing }) => {
   const onFileChange = (e) => {
     const files = Array.from(e.target.files);
     setImageFiles(e.target.files);
-
-    // Create local URLs for previewing images before upload
+  
     const filePreviews = files.map((file) => URL.createObjectURL(file));
     setPreviews(filePreviews);
   };
