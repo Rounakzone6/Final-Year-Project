@@ -82,7 +82,7 @@ const ContextProvider = (props) => {
         setLoading(false);
       }
     };
-    if (backendUrl) loadData();
+    if (token && backendUrl) loadData();
   }, [backendUrl, token]);
 
   useEffect(() => {
