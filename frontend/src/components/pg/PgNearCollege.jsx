@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useOutletContext, useParams, Link } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import {
   FaMapMarkerAlt,
   FaMars,

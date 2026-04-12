@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { NavLink } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { FaPlus, FaTrash, FaEdit, FaUserShield } from "react-icons/fa";
 import axios from "axios";
 import AppContext from "@/contexts/AppContext";

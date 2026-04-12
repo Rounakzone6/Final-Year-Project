@@ -1,5 +1,5 @@
 import { useContext, useRef, useState } from "react";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
 import { FaCloudUploadAlt, FaMapMarkedAlt, FaHashtag } from "react-icons/fa";
 import axios from "axios";

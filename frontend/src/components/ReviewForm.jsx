@@ -1,5 +1,5 @@
 import { useContext, useRef, useState } from "react";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { FaRegStar, FaStar } from "react-icons/fa";
 import axios from "axios";
 import AppContext from "@/contexts/AppContext";

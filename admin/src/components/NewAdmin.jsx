@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { FaUserPlus, FaEye, FaEyeSlash, FaShieldAlt } from "react-icons/fa";
 import axios from "axios";
 import AppContext from "@/contexts/AppContext";

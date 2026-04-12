@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ToastContainer } from "react-toastify";
+import { Toaster } from "react-hot-toast";
 import Home from "@/pages/Home";
 import AdminLogin from "@/components/AdminLogin";
 import AppContext from "@/contexts/AppContext";
@@ -9,7 +9,7 @@ const App = () => {
 
   return (
     <>
-      <ToastContainer />
+      <Toaster />
       {token === "" ? <AdminLogin /> : <Home />}
     </>
   );

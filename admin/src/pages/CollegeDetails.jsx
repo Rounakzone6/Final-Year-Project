@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import AppContext from "@/contexts/AppContext";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { FaEarthAsia } from "react-icons/fa6";
 import { MdVerifiedUser } from "react-icons/md";
 import { GoUnverified } from "react-icons/go";

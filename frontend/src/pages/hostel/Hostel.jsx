@@ -2,8 +2,6 @@ import { useContext, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import {
   FaPhoneAlt,
-  FaUtensils,
-  FaUsers,
   FaChevronLeft,
   FaChevronRight,
 } from "react-icons/fa";

@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { Toaster } from "react-hot-toast";
 import Home from "./pages/Home";
 import City from "./pages/city/City";
 import CityDetails from "./pages/city/CityDetails";
@@ -34,7 +34,7 @@ const App = () => {
   return (
     <>
       <Navbar />
-      <ToastContainer />
+      <Toaster />
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
