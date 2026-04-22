@@ -29,6 +29,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import PageNotFound from "./components/PageNotFound";
 import ScrollToTop from "./components/ScrollToTop";
+import Chatbot from "./components/Chatbot";
 
 const App = () => {
   return (
@@ -65,6 +66,7 @@ const App = () => {
           <Route path="city/:id" element={<MessInCity />} />
         </Route>
       </Routes>
+      <Chatbot />
       <Footer />
     </>
   );
