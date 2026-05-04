@@ -10,7 +10,7 @@ const CityList = () => {
       <div className="max-w-[90%] mx-auto">
         <div className="flex gap-3 justify-items-center md:p-2 overflow-x-hidden">
           {loading
-            ? Array.from({ length: 15 }).map((_, index) => (
+            ? Array.from({ length: 25 }).map((_, index) => (
                 <div
                   key={index}
                   className={`flex flex-col items-center gap-1 group transition-all duration-300 ${
@@ -21,7 +21,7 @@ const CityList = () => {
                   <div className="w-12 h-3 bg-gray-100 rounded animate-pulse" />
                 </div>
               ))
-            : cityList.slice(0, 15).map((city, index) => (
+            : cityList.slice(0, 25).map((city, index) => (
                 <NavLink
                   to={`/city/${city._id}`}
                   key={city._id}
