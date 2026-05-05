@@ -20,6 +20,18 @@ const Feedback = () => {
       text: "Verified owners and transparent pricing. I didn't have to deal with middlemen or hidden charges. The map view made choosing the location so simple.",
       tags: "#Verified #StudentFriendly",
     },
+    {
+      name: "Priya Verma",
+      role: "Hostel Resident",
+      text: "Verified owners and transparent pricing. I didn't have to deal with middlemen or hidden charges. The map view made choosing the location so simple.",
+      tags: "#Verified #StudentFriendly",
+    },
+    {
+      name: "Sajal Singh",
+      role: "PG Resident",
+      text: "Verified owners and transparent pricing. I didn't have to deal with middlemen or hidden charges. The map view made choosing the location so simple.",
+      tags: "#Verified #StudentFriendly",
+    },
   ];
 
   return (
