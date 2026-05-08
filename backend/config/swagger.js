@@ -4,18 +4,18 @@ const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "My Backend API",
+      title: "Nestify Backend API",
       version: "1.0.0",
-      description: "API documentation using Scalar",
+      description: "Nestify backend API documentation",
     },
     servers: [
       {
-        url: "http://localhost:4000",
+        url: process.env.SWAGGER_SERVER_URL || "http://localhost:4000",
         description: "Local server",
       },
     ],
   },
-  apis: ["./routes/*.js"],
+  apis: ["./router/*.js"],
 };
 
 const swaggerSpec = swaggerJsdoc(options);

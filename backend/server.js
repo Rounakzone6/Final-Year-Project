@@ -19,7 +19,7 @@ import { apiReference } from "@scalar/express-api-reference";
 import { fileURLToPath } from "url";
 
 const app = express();
-const port = process.env.PORT | 4000;
+const port = process.env.PORT || 4000;
 
 connectDb();
 connectCloudinary();
